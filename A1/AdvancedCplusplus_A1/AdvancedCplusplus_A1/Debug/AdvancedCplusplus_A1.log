@@ -1,0 +1,57 @@
+﻿  VectorItt.cpp
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoritt.h(5): error C2208: 'int': no members defined using this type
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoritt.h(5): warning C4091: 'typedef ': ignored on left of 'int' when no variable is declared
+  Vector.cpp
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(6): error C2955: 'std::iterator': use of class template requires template argument list
+  b:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.12.25827\include\xutility(4213): note: see declaration of 'std::iterator'
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(45): note: see reference to class template instantiation 'Vector<T>' being compiled
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(11): error C2061: syntax error: identifier 'VectItt'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(11): error C2238: unexpected token(s) preceding ';'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(16): error C2039: 'vector': is not a member of 'std'
+  b:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.12.25827\include\iterator(15): note: see declaration of 'std'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(16): error C2143: syntax error: missing ',' before '&'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(28): error C3646: 'begin': unknown override specifier
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(28): error C2059: syntax error: '('
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(28): error C2238: unexpected token(s) preceding ';'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(29): error C3646: 'end': unknown override specifier
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(29): error C2059: syntax error: '('
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.h(29): error C2238: unexpected token(s) preceding ';'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(24): error C2039: 'vector': is not a member of 'std'
+  b:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.12.25827\include\iterator(15): note: see declaration of 'std'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(24): error C2988: unrecognizable template declaration/definition
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(24): error C2143: syntax error: missing ',' before '&'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(30): error C2244: 'Vector<T>::operator =': unable to match function definition to an existing declaration
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(29): note: see declaration of 'Vector<T>::operator ='
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(30): note: definition
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(30): note: 'Vector &Vector<T>::operator =(const Vector<T> &)'
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(30): note: existing declarations
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(30): note: 'Vector<T> &Vector<T>::operator =(Vector<T> &&)'
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(30): note: 'Vector<T> &Vector<T>::operator =(const Vector<T> &)'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(36): error C2244: 'Vector<T>::operator =': unable to match function definition to an existing declaration
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(35): note: see declaration of 'Vector<T>::operator ='
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(36): note: definition
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(36): note: 'Vector &Vector<T>::operator =(Vector<T> &&)'
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(36): note: existing declarations
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(36): note: 'Vector<T> &Vector<T>::operator =(Vector<T> &&)'
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(36): note: 'Vector<T> &Vector<T>::operator =(const Vector<T> &)'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(97): error C2143: syntax error: missing ';' before 'Vector<T>::begin'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(97): warning C4346: 'begin': dependent name is not a type
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(97): note: prefix with 'typename' to indicate a type
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(98): warning C4346: 'Vector<T>::begin': dependent name is not a type
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(98): note: prefix with 'typename' to indicate a type
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(98): error C2988: unrecognizable template declaration/definition
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(98): error C2059: syntax error: '<end Parse>'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(98): error C2143: syntax error: missing ';' before '{'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(98): error C2447: '{': missing function header (old-style formal list?)
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(103): error C2143: syntax error: missing ';' before 'Vector<T>::end'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(103): warning C4346: 'end': dependent name is not a type
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(103): note: prefix with 'typename' to indicate a type
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(104): warning C4346: 'Vector<T>::end': dependent name is not a type
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(104): note: prefix with 'typename' to indicate a type
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(104): error C2988: unrecognizable template declaration/definition
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(104): error C2059: syntax error: '<end Parse>'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(104): error C2143: syntax error: missing ';' before '{'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(104): error C2447: '{': missing function header (old-style formal list?)
+  Generating Code...
