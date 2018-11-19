@@ -1,7 +1,5 @@
 #include "VectorItt.h"
 
-
-
 VectorItt::VectorItt()
 {
 }

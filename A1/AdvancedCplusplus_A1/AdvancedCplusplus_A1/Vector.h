@@ -1,11 +1,15 @@
 #pragma once
 #include <iterator>
+#include <cstdlib>
 
 template<class T>
-class Vector : std::iterator
+class Vector : std::iterator<std::random_access_iterator_tag, T>
 {
-	T value_type;
-	unsigned int size_type;
+private:
+	typedef T value_type;
+	//T* pointer;
+	const T* const_pointer;
+	size_t size_type;
 
 public:
 	using iterator = VectItt<T>;
@@ -19,7 +23,8 @@ public:
 	T& operator[](size_t i);
 	T& at(size_t i);
 	T* data() noexcept;
-	const T* data() const noexcept;	size_t size() const noexcept;
+	const T* data() const noexcept;
+	size_t size() const noexcept;
 	void reserve(size_t n);
 	size_t capacity() const noexcept;
 	void shrink_to_fit();
@@ -41,5 +46,5 @@ public:
 		for (size_t i = 0; i < other.size(); ++i)
 			cout << other[i];
 		return cout;
-	}
+	};
 };
