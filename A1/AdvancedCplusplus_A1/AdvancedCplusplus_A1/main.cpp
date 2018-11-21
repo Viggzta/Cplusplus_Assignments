@@ -1,23 +1,29 @@
 #ifdef _DEBUG
 #ifndef DBG_NEW
-#include <stdlib.h>
-#include <crtdbg.h>
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
 #define new DBG_NEW
 #endif
 #endif  // _DEBUG
+#include <crtdbg.h>
+
+#include "VectItt.h"
 
 #include <iostream>
-#include "Vector.h"
+using std::cout;
 
-int main()
-{
-	#ifdef DBG_NEW
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	#endif
+void TestVector();
 
-	Vector<int> intVector;
+int main() {
+#ifdef DBG_NEW
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+    std::locale::global(std::locale("swedish"));
+    /*TestVector();
+    TestFörGodkäntIter();
+    TestIterPart();
+    TestIterInAlg();*/
 
-	std::cout << "Test" << std::endl;
-	return 0;
+    new int;
+    cout << "det finns en minnesläcka i main, avsiktligt!\n så ni kan se att er minnesläckstest fungerar\n";
+    std::cin.get();
 }

@@ -1,15 +1,15 @@
 #pragma once
-#include <iterator>
-#include <cstdlib>
+#include "VectItt.h"
 
 template<class T>
 class Vector : std::iterator<std::random_access_iterator_tag, T>
 {
 private:
-	typedef T value_type;
+	//typedef T value_type;
 	//T* pointer;
 	const T* const_pointer;
 	size_t size_type;
+	size_t capacity_type;
 
 public:
 	using iterator = VectItt<T>;
@@ -17,7 +17,7 @@ public:
 	~Vector();
 	Vector(const Vector& other);
 	Vector(Vector&& other);
-	Vector(const std::vector& other);
+	Vector(const char& other);
 	Vector& operator=(const Vector& other);
 	Vector& operator=(Vector&& other);
 	T& operator[](size_t i);
