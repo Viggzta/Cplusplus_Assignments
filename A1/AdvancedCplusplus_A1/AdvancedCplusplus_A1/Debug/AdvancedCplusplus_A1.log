@@ -1,2 +1,16 @@
-﻿  Vector.cpp
-  AdvancedCplusplus_A1.vcxproj -> D:\GameProjects\Cplusplus_Assignments\A1\AdvancedCplusplus_A1\Debug\AdvancedCplusplus_A1.exe
+﻿  VectorTest.cpp
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(7): error C2460: 'unnamed-parameter': uses 'VectorIter<T>', which is being defined
+  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(113): note: see reference to class template instantiation 'VectorIter<T>' being compiled
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(14): error C2143: syntax error: missing ';' before 'template'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(16): error C2993: 'T *': illegal type for non-type template parameter '__formal'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(21): error C2143: syntax error: missing ';' before 'private'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(21): error C3855: 'VectorIter<T>::IteratorTraits': template parameter '__formal' is incompatible with the declaration
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(89): error C2061: syntax error: identifier 'difference_type'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(94): error C2061: syntax error: identifier 'difference_type'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(99): error C2143: syntax error: missing ';' before '-'
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(99): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(100): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(113): fatal error C1903: unable to recover from previous error(s); stopping compilation
+  INTERNAL COMPILER ERROR in 'B:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.12.25827\bin\HostX86\x86\CL.exe'
+      Please choose the Technical Support command on the Visual C++
+      Help menu, or open the Technical Support help file for more information

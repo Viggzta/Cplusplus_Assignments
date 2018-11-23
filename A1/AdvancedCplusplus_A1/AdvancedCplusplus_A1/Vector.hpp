@@ -4,8 +4,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "VectItt.h"
-#include "Vector.h"
+#include "VectorIter.hpp"
 
 template<class T>
 class Vector : std::iterator<std::random_access_iterator_tag, T>
@@ -18,7 +17,7 @@ private:
 	size_t capacity_type;
 
 public:
-	using iterator = VectItt<T>;
+	using iterator = VectorIter<T>;
 	Vector()
 	{
 		if (pointer != nullptr)
@@ -106,7 +105,7 @@ public:
 		{
 			throw std::out_of_range("Vector<T>::at(size_t i) : Index out of range.");
 		}
-		return pointer + i;
+		return &(pointer + i);
 	}
 
 	T& at(size_t i)
@@ -115,7 +114,7 @@ public:
 		{
 			throw std::out_of_range("Vector<T>::at(size_t i) : Index out of range.");
 		}
-		return pointer + i;
+		return &(pointer + i);
 	}
 
 	T* data() noexcept

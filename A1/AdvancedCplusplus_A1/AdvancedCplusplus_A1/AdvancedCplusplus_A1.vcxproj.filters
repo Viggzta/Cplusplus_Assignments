@@ -15,27 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Vector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VectItt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VectorTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VectIterTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorIter.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Vector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VectItt.cpp">
+    <ClCompile Include="VectorTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VectIterTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
