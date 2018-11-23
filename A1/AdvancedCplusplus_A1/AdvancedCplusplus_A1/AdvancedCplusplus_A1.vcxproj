@@ -118,6 +118,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="VectItt.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />

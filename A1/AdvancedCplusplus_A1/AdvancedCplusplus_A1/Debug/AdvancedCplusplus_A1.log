@@ -1,19 +1,2 @@
 ﻿  Vector.cpp
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(195): error C2143: syntax error: missing ';' before 'Vector<T>::begin'
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(195): warning C4346: 'begin': dependent name is not a type
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(195): note: prefix with 'typename' to indicate a type
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(196): warning C4346: 'Vector<T>::begin': dependent name is not a type
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(196): note: prefix with 'typename' to indicate a type
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(196): error C2988: unrecognizable template declaration/definition
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(196): error C2059: syntax error: '<end Parse>'
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(196): error C2143: syntax error: missing ';' before '{'
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(196): error C2447: '{': missing function header (old-style formal list?)
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(201): error C2143: syntax error: missing ';' before 'Vector<T>::end'
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(201): warning C4346: 'end': dependent name is not a type
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(201): note: prefix with 'typename' to indicate a type
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(202): warning C4346: 'Vector<T>::end': dependent name is not a type
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(202): note: prefix with 'typename' to indicate a type
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(202): error C2988: unrecognizable template declaration/definition
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(202): error C2059: syntax error: '<end Parse>'
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(202): error C2143: syntax error: missing ';' before '{'
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.cpp(202): error C2447: '{': missing function header (old-style formal list?)
+  AdvancedCplusplus_A1.vcxproj -> D:\GameProjects\Cplusplus_Assignments\A1\AdvancedCplusplus_A1\Debug\AdvancedCplusplus_A1.exe
