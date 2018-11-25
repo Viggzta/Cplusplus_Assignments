@@ -1,10 +1,11 @@
 #pragma once
 #include <iterator>
+#include <cstddef>
 
 template <class T>
-class VectorIter : std::iterator<std::random_access_iterator_tag, T, int>
+class VectorIter : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t>
 {
-	template <VectorIter>
+	/*template <VectorIter>
 	struct IteratorTraits
 	{
 		using value_type = typename VectorIter::value_type;
@@ -15,8 +16,8 @@ class VectorIter : std::iterator<std::random_access_iterator_tag, T, int>
 	struct IteratorTraits<T*>
 	{
 		using value_type = typename T;
-		using difference_type = std::ptrdiff_t;
-	};
+		using difference_type = ptrdiff_t;
+	};*/
 
 private:
 	T * index;
@@ -59,17 +60,21 @@ public:
 
 	T& operator[](size_t i)
 	{
-		return &(start + i);
+		T* a = start + i;
+		//T out = &a;
+		return a;
 	}
 
 	VectorIter& operator++()
 	{
-		return ++index;
+		VectorIter out = ++index;
+		return out;
 	}
 
 	VectorIter& operator--()
 	{
-		return --index;
+		VectorIter out = --index;
+		return out;
 	}
 
 	VectorIter operator++(int)
@@ -86,19 +91,19 @@ public:
 		return out;
 	}
 
-	VectorIter operator+(difference_type i) const
+	VectorIter operator+(ptrdiff_t i) const
 	{
 		return (index + i);
 	}
 
-	VectorIter operator-(difference_type i) const
+	VectorIter operator-(ptrdiff_t i) const
 	{
 		return (index - i);
 	}
 
-	difference_type operator-(const VectorIter&) const
+	ptrdiff_t operator-(const VectorIter& other) const
 	{
-		return std::distance(this, other);
+		return (index - other.index);
 	}
 
 	friend bool operator==(const VectorIter& lhs, const VectorIter& rhs)
@@ -109,5 +114,15 @@ public:
 		}
 
 		return false;
+	}
+
+	friend bool operator!=(const VectorIter& lhs, const VectorIter& rhs)
+	{
+		if (lhs.start == rhs.start)
+		{
+			return false;
+		}
+
+		return true;
 	}
 };

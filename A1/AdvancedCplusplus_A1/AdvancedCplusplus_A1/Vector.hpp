@@ -11,7 +11,7 @@ class Vector : std::iterator<std::random_access_iterator_tag, T>
 {
 private:
 	//typedef T value_type;
-	//T* pointer;
+	T* pointer;
 	const T* const_pointer;
 	size_t size_type;
 	size_t capacity_type;
@@ -62,10 +62,15 @@ public:
 		pointer = new T[capacity_type];
 	}
 
-	Vector(const char& other)
+	Vector(const char* other)
 	{
-		Vector();
-		push_back(other);
+		Vector<char>();
+
+		int offset = 0;
+		while ((other +offset) != '\0')
+		{
+			push_back((other +offset));
+		}
 	}
 
 	Vector& operator=(const Vector& other)
@@ -99,20 +104,20 @@ public:
 		return *this;
 	}
 
-	T& operator[](size_t i)
+	T& operator[](size_t i) const
 	{
 		if (i >= size_type)
 		{
-			throw std::out_of_range("Vector<T>::at(size_t i) : Index out of range.");
+			throw std::out_of_range("Vector::at(size_t i) : Index out of range.");
 		}
 		return &(pointer + i);
 	}
 
-	T& at(size_t i)
+	T& at(size_t i) const
 	{
 		if (i >= size_type)
 		{
-			throw std::out_of_range("Vector<T>::at(size_t i) : Index out of range.");
+			throw std::out_of_range("Vector::at(size_t i) : Index out of range.");
 		}
 		return &(pointer + i);
 	}
@@ -126,7 +131,7 @@ public:
 	{
 		return pointer;
 	}
-	
+
 	size_t size() const noexcept
 	{
 		return size_type;
@@ -156,7 +161,7 @@ public:
 	{
 		return capacity_type;
 	}
-	
+
 	void shrink_to_fit()
 	{
 		resize(size_type);
@@ -169,15 +174,16 @@ public:
 			reserve(capacity_type * 2);
 		}
 
-		&(pointer + size_type) = c;
+		T* temp = pointer + size_type;
+		&temp = c;
 		++size_type;
 	}
 
 	void resize(size_t n)
 	{
 		T* t = new T[n];
-		memcpy(t.begin(), begin(), n);
-		delete &pointer;
+		memcpy(t, pointer, n);
+		delete pointer;
 		pointer = t;
 		capacity_type = n;
 		if (n < size_type)
@@ -204,7 +210,7 @@ public:
 		}
 		for (size_t i = 0; i < other.size(); ++i)
 		{
-			if (lhs[i] != rhs[i])
+			if (lhs[i] != other[i])
 			{
 				return false;
 			}
@@ -220,7 +226,7 @@ public:
 		}
 		for (size_t i = 0; i < other.size(); ++i)
 		{
-			if (lhs[i] != rhs[i])
+			if (lhs[i] != other[i])
 			{
 				return true;
 			}
@@ -248,15 +254,15 @@ public:
 
 	friend bool operator<=(const Vector& lhs, const Vector& other)
 	{
-		return !(lhs.size() > rhs.size());
+		return !(lhs.size() > other.size());
 	}
 
 	friend bool operator>=(const Vector& lhs, const Vector& other)
 	{
-		return !(lhs.size() < rhs.size());
+		return !(lhs.size() < other.size());
 	}
 
-	void swap(Vector<T>& lhs, Vector<T>& rhs)
+	void swap(Vector& lhs, Vector& rhs)
 	{
 		T temp(lhs);
 		lhs = rhs;
