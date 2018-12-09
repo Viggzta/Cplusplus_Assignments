@@ -7,199 +7,205 @@
 #include "VectorIter.hpp"
 
 template<class T>
-class Vector : std::iterator<std::random_access_iterator_tag, T>
+class Vector : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t, T*, T&>
 {
 private:
-	//typedef T value_type;
-	T* pointer;
+	T* _pointer;
 	const T* const_pointer;
-	size_t size_type;
-	size_t capacity_type;
+	size_t _size;
+	size_t _capacity;
 
 public:
+
 	using iterator = VectorIter<T>;
+
 	Vector()
 	{
-		if (pointer != nullptr)
-		{
-			delete &pointer;
-		}
+		_size = 0;
+		_capacity = 4;
+		_pointer = new T[_capacity];
 
-		size_type = 0;
-		capacity_type = 4;
-		pointer = new T[capacity_type];
+		std::cout << "Ran default ctor!" << std::endl;
 	}
 
 	~Vector()
 	{
-		if (pointer != nullptr)
+		if (_pointer != nullptr)
 		{
-			delete &pointer;
+			delete[] _pointer;
+
+			_size = 0;
+			_capacity = 0;
+			std::cout << "Ran destructor!" << std::endl;
 		}
 	}
 
 	Vector(const Vector& other)
 	{
-		if (pointer != nullptr)
-		{
-			delete &pointer;
-		}
+		this->~Vector();
 
-		capacity_type = other.capacity;
-		size_type = other.size_type;
-		pointer = new T[capacity_type];
+		_capacity = other._capacity;
+		_size = other._size;
+		_pointer = new T[_capacity];
+
+		std::cout << "Ran copy ctor!" << std::endl;
 	}
 
 	Vector(Vector&& other)
 	{
-		if (pointer != nullptr)
-		{
-			delete &pointer;
-		}
+		this->~Vector();
 
-		capacity_type = other.capacity_type;
-		size_type = other.size_type;
-		pointer = new T[capacity_type];
+		_capacity = other._capacity;
+		_size = other._size;
+		_pointer = new T[_capacity];
+
+		std::cout << "Ran move ctor!" << std::endl;
 	}
 
 	Vector(const char* other)
 	{
-		Vector<char>();
+		_size = 0;
+		_capacity = 4;
+		_pointer = new T[_capacity];
 
 		int offset = 0;
-		while ((other +offset) != '\0')
+		while (other[offset] != '\0')
 		{
-			push_back((other +offset));
+			//std::cout << "Pushing! " << other[offset] << std::endl;
+			push_back(other[offset]);
+			++offset;
 		}
+
+		std::cout << "Ran char ctor!" << std::endl;
 	}
 
 	Vector& operator=(const Vector& other)
 	{
-		if (pointer != nullptr)
-		{
-			delete &pointer;
-		}
+		this->~Vector();
 
-		capacity_type = other.capacity_type;
-		size_type = other.size_type;
-		pointer = new T[capacity_type];
+		_capacity = other._capacity;
+		_size = other._size;
+		_pointer = new T[_capacity];
 		return *this;
+
+		std::cout << "Ran assign ctor1!" << std::endl;
 	}
 
 	Vector& operator=(Vector&& other)
 	{
-		if (pointer != nullptr)
-		{
-			delete &pointer;
-		}
+		this->~Vector();
 
-		if (pointer != nullptr)
-		{
-			delete &pointer;
-		}
-
-		capacity_type = other.capacity_type;
-		size_type = other.size_type;
-		pointer = new T[capacity_type];
+		_capacity = other._capacity;
+		_size = other._size;
+		_pointer = new T[_capacity];
 		return *this;
+
+		std::cout << "Ran assign ctor2!" << std::endl;
 	}
 
 	T& operator[](size_t i) const
 	{
-		if (i >= size_type)
+		if (i >= _size || i < 0)
 		{
 			throw std::out_of_range("Vector::at(size_t i) : Index out of range.");
 		}
-		return &(pointer + i);
+		return _pointer[i];
 	}
 
 	T& at(size_t i) const
 	{
-		if (i >= size_type)
+		if (i >= _size)
 		{
 			throw std::out_of_range("Vector::at(size_t i) : Index out of range.");
 		}
-		return &(pointer + i);
+		return _pointer[i];
 	}
 
 	T* data() noexcept
 	{
-		return pointer;
+		return _pointer;
 	}
 
 	const T* data() const noexcept
 	{
-		return pointer;
+		return _pointer;
 	}
 
 	size_t size() const noexcept
 	{
-		return size_type;
+		return _size;
 	}
 
 	void reserve(size_t n)
 	{
-		if (capacity_type < n)
+		std::cout << "Starting reserve!" << std::endl;
+		if (_capacity < n)
 		{
-			if (pointer != nullptr)
+			if (_pointer != nullptr)
 			{
 				T* newData = new T[n];
-				memcopy(newData, pointer, size_type);
-				delete &pointer;
-				pointer = newData;
+				for (size_t i = 0; i < _size; ++i)
+				{
+					newData[i] = _pointer[i];
+				}
+
+				delete[] _pointer;
+
+				_pointer = newData;
 			}
 			else
 			{
-				pointer = new T[n];
-				size_type = 0;
+				_pointer = new T[n];
+				_size = 0;
 			}
-			capacity_type = n;
+			_capacity = n;
 		}
+		std::cout << "Ending reserve!" << std::endl;
 	}
 
 	size_t capacity() const noexcept
 	{
-		return capacity_type;
+		return _capacity;
 	}
 
 	void shrink_to_fit()
 	{
-		resize(size_type);
+		resize(_size);
 	}
 
 	void push_back(T c)
 	{
-		if (size_type == capacity_type)
+		if (_size == _capacity)
 		{
-			reserve(capacity_type * 2);
+			reserve(_capacity * 2);
 		}
 
-		T* temp = pointer + size_type;
-		&temp = c;
-		++size_type;
+		std::cout << "Size when pushing: " << _size << std::endl;
+		_pointer[_size++] = c;
 	}
 
 	void resize(size_t n)
 	{
 		T* t = new T[n];
-		memcpy(t, pointer, n);
-		delete pointer;
-		pointer = t;
-		capacity_type = n;
-		if (n < size_type)
+		memcpy(t, _pointer, n);
+		this->~Vector();
+		_pointer = t;
+		_capacity = n;
+		if (n < _size)
 		{
-			size_type = n;
+			_size = n;
 		}
+		std::cout << "Ran resize!" << std::endl;
 	}
 
 	iterator begin() const
 	{
-		return pointer;
+		return _pointer;
 	}
 
 	iterator end() const
 	{
-		return pointer + size_type;
+		return (_pointer + _size);
 	}
 
 	friend bool operator==(const Vector& lhs, const Vector& other)
@@ -236,30 +242,56 @@ public:
 
 	friend bool operator<(const Vector& lhs, const Vector& other)
 	{
-		if (lhs.size() < other.size())
+		for (size_t i = 0; i < other.size(); ++i)
 		{
-			return true;
+			if (lhs[i] == other[i])
+			{
+				continue;
+			}
+
+			if (lhs[i] < other[i])
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
+
 		return false;
 	}
 
 	friend bool operator>(const Vector& lhs, const Vector& other)
 	{
-		if (lhs.size() > other.size())
+		for (size_t i = 0; i < other.size(); ++i)
 		{
-			return true;
+			if (lhs[i] == other[i])
+			{
+				continue;
+			}
+
+			if (lhs[i] > other[i])
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
+
 		return false;
 	}
 
 	friend bool operator<=(const Vector& lhs, const Vector& other)
 	{
-		return !(lhs.size() > other.size());
+		return !(lhs > other);
 	}
 
 	friend bool operator>=(const Vector& lhs, const Vector& other)
 	{
-		return !(lhs.size() < other.size());
+		return !(lhs < other);
 	}
 
 	void swap(Vector& lhs, Vector& rhs)

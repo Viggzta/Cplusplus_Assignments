@@ -3,112 +3,104 @@
 #include <cstddef>
 
 template <class T>
-class VectorIter : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t>
+class VectorIter : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t, T*, T&>
 {
-	/*template <VectorIter>
-	struct IteratorTraits
-	{
-		using value_type = typename VectorIter::value_type;
-		using difference_type = typename VectorIter::difference_type;
-	};
-
-	template<class T>
-	struct IteratorTraits<T*>
-	{
-		using value_type = typename T;
-		using difference_type = ptrdiff_t;
-	};*/
 
 private:
-	T * index;
-	T * start;
+	T * _index;
+	T * _start;
 
 public:
+	typedef T value_type;
+	typedef ptrdiff_t difference_type;
+	typedef T* pointer;
+	typedef T& reference;
+	typedef std::random_access_iterator_tag iterator_category;
+
 	VectorIter(T* p)
 	{
-		start = p;
-		index = p;
+		_start = p;
+		_index = p;
 	}
 
 	VectorIter()
 	{
-		start = nullptr;
-		index = nullptr;
+		_start = nullptr;
+		_index = nullptr;
 	}
 
 	VectorIter(const VectorIter& other)
 	{
-		start = *other;
-		index = *other;
+		_start = other._start;
+		_index = other._index;
 	}
 
 	VectorIter& operator=(const VectorIter& other)
 	{
-		start = *other;
-		index = *other;
+		_start = other._start;
+		_index = other._index;
+		return *this;
 	}
 
 	T & operator*()
 	{
-		return &index;
+		return *_index;
 	}
 
 	T* operator->()
 	{
-		return index;
+		return _index;
 	}
 
 	T& operator[](size_t i)
 	{
-		T* a = start + i;
-		//T out = &a;
-		return a;
+		return _start[i];
 	}
 
 	VectorIter& operator++()
 	{
-		VectorIter out = ++index;
-		return out;
+		++_index;
+		return *this;
 	}
 
 	VectorIter& operator--()
 	{
-		VectorIter out = --index;
-		return out;
+		--_index;
+		return *this;
 	}
 
 	VectorIter operator++(int)
 	{
-		VectorIter out = index;
-		++index;
+		VectorIter out = *this;
+		++_index;
 		return out;
 	}
 
 	VectorIter operator--(int)
 	{
-		VectorIter out = index;
-		--index;
+		VectorIter out = *this;
+		--_index;
 		return out;
 	}
 
 	VectorIter operator+(ptrdiff_t i) const
 	{
-		return (index + i);
+		return (_index + i);
 	}
 
 	VectorIter operator-(ptrdiff_t i) const
 	{
-		return (index - i);
+		return (_index - i);
 	}
 
 	ptrdiff_t operator-(const VectorIter& other) const
 	{
-		return (index - other.index);
+		return (_index - other._index);
 	}
 
 	friend bool operator==(const VectorIter& lhs, const VectorIter& rhs)
 	{
-		if (lhs.start == rhs.start)
+		if (lhs._start == rhs._start)
 		{
 			return true;
 		}
@@ -118,11 +110,41 @@ public:
 
 	friend bool operator!=(const VectorIter& lhs, const VectorIter& rhs)
 	{
-		if (lhs.start == rhs.start)
+		if (lhs._start == rhs._start)
 		{
 			return false;
 		}
 
 		return true;
+	}
+
+	friend bool operator<(const VectorIter& lhs, const VectorIter& rhs)
+	{
+		if (lhs._index - rhs._index < 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	friend bool operator>(const VectorIter& lhs, const VectorIter& rhs)
+	{
+		if (rhs._index - lhs._index < 0)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	friend bool operator<=(const VectorIter& lhs, const VectorIter& rhs)
+	{
+		return !(lhs._index > rhs._index);
+	}
+
+	friend bool operator>=(const VectorIter& lhs, const VectorIter& rhs)
+	{
+		return !(lhs._index < rhs._index);
 	}
 };

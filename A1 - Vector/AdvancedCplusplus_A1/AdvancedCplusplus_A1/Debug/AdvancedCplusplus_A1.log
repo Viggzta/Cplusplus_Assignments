@@ -1,32 +1,6 @@
-﻿  VectorTest.cpp
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.hpp(178): error C2440: '=': cannot convert from 'char' to 'char **'
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.hpp(178): note: Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vector.hpp(171): note: while compiling class template member function 'void Vector<char>::push_back(T)'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectortest.cpp(41): note: see reference to function template instantiation 'void Vector<char>::push_back(T)' being compiled
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectortest.cpp(26): note: see reference to class template instantiation 'Vector<char>' being compiled
-  VectIterTest.cpp
-b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(65): error C2440: 'return': cannot convert from 'char *' to 'char &'
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectoriter.hpp(62): note: while compiling class template member function 'char &VectorIter<T>::operator [](::size_t)'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectitertest.cpp(56): note: see reference to function template instantiation 'char &VectorIter<T>::operator [](::size_t)' being compiled
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a1\advancedcplusplus_a1\advancedcplusplus_a1\vectitertest.cpp(29): note: see reference to class template instantiation 'VectorIter<T>' being compiled
-          with
-          [
-              T=char
-          ]
+﻿  VectIterTest.cpp
   Generating Code...
+  Compiling...
+  VectorTest.cpp
+  Generating Code...
+  AdvancedCplusplus_A1.vcxproj -> B:\MAPP\Game-Projects\Cplusplus_Assignments\A1 - Vector\AdvancedCplusplus_A1\Debug\AdvancedCplusplus_A1.exe

@@ -106,6 +106,7 @@ void TestCapacity() {
 
 void TestVector() {
 	{
+		std::cout << "TEEEEEEEST!" << std::endl;
 		Vector<char> vecFoo("Foo");
 		const Vector<char> vecCFoo("Foo");
 		Vector<char> vecBar("Bar");

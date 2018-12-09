@@ -5,25 +5,25 @@
 #endif
 #endif  // _DEBUG
 #include <crtdbg.h>
-#include <iostream>
+
 #include "VectIterTest.h"
 
+#include <iostream>
 using std::cout;
 
 void TestVector();
 
-int main()
-{
+int main() {
 #ifdef DBG_NEW
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-    std::locale::global(std::locale("swedish"));
-    TestVector();
-    TestFörGodkäntIter();
-    TestIterPart();
-    TestIterInAlg();
+	std::locale::global(std::locale("swedish"));
+	TestVector();
+	TestFörGodkäntIter();
+	TestIterPart();
+	TestIterInAlg();
 
-    new int;
-    cout << "det finns en minnesläcka i main, avsiktligt!\n så ni kan se att er minnesläckstest fungerar\n";
-    std::cin.get();
+	new int;
+	cout << "det finns en minnesläcka i main, avsiktligt!\n så ni kan se att er minnesläckstest fungerar\n";
+	std::cin.get();
 }
