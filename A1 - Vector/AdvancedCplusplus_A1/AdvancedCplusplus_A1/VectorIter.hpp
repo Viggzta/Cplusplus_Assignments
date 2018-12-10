@@ -8,7 +8,6 @@ class VectorIter : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t, 
 
 private:
 	T * _index;
-	T * _start;
 
 public:
 	typedef T value_type;
@@ -19,25 +18,21 @@ public:
 
 	VectorIter(T* p)
 	{
-		_start = p;
 		_index = p;
 	}
 
 	VectorIter()
 	{
-		_start = nullptr;
 		_index = nullptr;
 	}
 
 	VectorIter(const VectorIter& other)
 	{
-		_start = other._start;
 		_index = other._index;
 	}
 
 	VectorIter& operator=(const VectorIter& other)
 	{
-		_start = other._start;
 		_index = other._index;
 		return *this;
 	}
@@ -54,7 +49,7 @@ public:
 
 	T& operator[](size_t i)
 	{
-		return _start[i];
+		return _index[i];
 	}
 
 	VectorIter& operator++()
@@ -100,7 +95,7 @@ public:
 
 	friend bool operator==(const VectorIter& lhs, const VectorIter& rhs)
 	{
-		if (lhs._start == rhs._start)
+		if (lhs._index == rhs._index)
 		{
 			return true;
 		}
@@ -110,7 +105,7 @@ public:
 
 	friend bool operator!=(const VectorIter& lhs, const VectorIter& rhs)
 	{
-		if (lhs._start == rhs._start)
+		if (lhs._index == rhs._index)
 		{
 			return false;
 		}

@@ -106,7 +106,6 @@ void TestCapacity() {
 
 void TestVector() {
 	{
-		std::cout << "TEEEEEEEST!" << std::endl;
 		Vector<char> vecFoo("Foo");
 		const Vector<char> vecCFoo("Foo");
 		Vector<char> vecBar("Bar");
@@ -164,7 +163,6 @@ void TestVector() {
 		Vector<char> tempRealloc("huj");
 		vec1 = tempRealloc;
 		assert(xxx == vec1.data());
-
 	}
 	//-	operator[](size_t i) som indexerar utan range check.
 	{
@@ -281,7 +279,6 @@ void TestVector() {
 	}
 
 	TestCapacity();
-
 }
 
 

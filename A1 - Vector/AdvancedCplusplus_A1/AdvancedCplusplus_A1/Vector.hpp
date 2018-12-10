@@ -10,7 +10,7 @@ template<class T>
 class Vector : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t, T*, T&>
 {
 private:
-	T* _pointer;
+	T * _pointer;
 	const T* const_pointer;
 	size_t _size;
 	size_t _capacity;
@@ -24,8 +24,6 @@ public:
 		_size = 0;
 		_capacity = 4;
 		_pointer = new T[_capacity];
-
-		std::cout << "Ran default ctor!" << std::endl;
 	}
 
 	~Vector()
@@ -36,7 +34,6 @@ public:
 
 			_size = 0;
 			_capacity = 0;
-			std::cout << "Ran destructor!" << std::endl;
 		}
 	}
 
@@ -48,7 +45,10 @@ public:
 		_size = other._size;
 		_pointer = new T[_capacity];
 
-		std::cout << "Ran copy ctor!" << std::endl;
+		for (size_t i = 0; i < _size; ++i)
+		{
+			_pointer[i] = other._pointer[i];
+		}
 	}
 
 	Vector(Vector&& other)
@@ -57,9 +57,11 @@ public:
 
 		_capacity = other._capacity;
 		_size = other._size;
-		_pointer = new T[_capacity];
+		_pointer = other._pointer;
 
-		std::cout << "Ran move ctor!" << std::endl;
+		other._capacity = 0;
+		other._size = 0;
+		other._pointer = nullptr;
 	}
 
 	Vector(const char* other)
@@ -75,50 +77,84 @@ public:
 			push_back(other[offset]);
 			++offset;
 		}
-
-		std::cout << "Ran char ctor!" << std::endl;
 	}
 
 	Vector& operator=(const Vector& other)
 	{
-		this->~Vector();
+		if (*this == other)
+		{
+			return *this;
+		}
 
-		_capacity = other._capacity;
+		if (_capacity != other._capacity)
+		{
+			this->~Vector();
+			_capacity = other._capacity;
+			_pointer = new T[_capacity];
+		}
 		_size = other._size;
-		_pointer = new T[_capacity];
-		return *this;
 
-		std::cout << "Ran assign ctor1!" << std::endl;
+		for (size_t i = 0; i < _size; ++i)
+		{
+			_pointer[i] = other._pointer[i];
+		}
+
+		return *this;
 	}
 
 	Vector& operator=(Vector&& other)
 	{
+		if (*this == other)
+		{
+			return *this;
+		}
+
 		this->~Vector();
 
 		_capacity = other._capacity;
 		_size = other._size;
 		_pointer = new T[_capacity];
-		return *this;
 
-		std::cout << "Ran assign ctor2!" << std::endl;
+		for (size_t i = 0; i < _size; ++i)
+		{
+			_pointer[i] = other._pointer[i];
+		}
+
+		return *this;
 	}
 
-	T& operator[](size_t i) const
+	T& operator[](size_t i)
 	{
-		if (i >= _size || i < 0)
-		{
-			throw std::out_of_range("Vector::at(size_t i) : Index out of range.");
-		}
 		return _pointer[i];
 	}
 
-	T& at(size_t i) const
+	T& at(size_t i)
 	{
 		if (i >= _size)
 		{
-			throw std::out_of_range("Vector::at(size_t i) : Index out of range.");
+			throw std::out_of_range("");
 		}
+		else
+		{
+			return _pointer[i];
+		}
+	}
+
+	const T& operator[](size_t i) const
+	{
 		return _pointer[i];
+	}
+
+	const T& at(size_t i) const
+	{
+		if (i >= _size)
+		{
+			throw std::out_of_range("");
+		}
+		else
+		{
+			return _pointer[i];
+		}
 	}
 
 	T* data() noexcept
@@ -138,7 +174,6 @@ public:
 
 	void reserve(size_t n)
 	{
-		std::cout << "Starting reserve!" << std::endl;
 		if (_capacity < n)
 		{
 			if (_pointer != nullptr)
@@ -160,7 +195,6 @@ public:
 			}
 			_capacity = n;
 		}
-		std::cout << "Ending reserve!" << std::endl;
 	}
 
 	size_t capacity() const noexcept
@@ -170,7 +204,15 @@ public:
 
 	void shrink_to_fit()
 	{
-		resize(_size);
+		T* out = new T[_size];
+		for (size_t i = 0; i < _size; ++i)
+		{
+			out[i] = _pointer[i];
+		}
+		delete[] _pointer;
+		_capacity = _size;
+		_pointer = out;
+
 	}
 
 	void push_back(T c)
@@ -180,22 +222,23 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		std::cout << "Size when pushing: " << _size << std::endl;
 		_pointer[_size++] = c;
 	}
 
 	void resize(size_t n)
 	{
-		T* t = new T[n];
-		memcpy(t, _pointer, n);
-		this->~Vector();
-		_pointer = t;
-		_capacity = n;
-		if (n < _size)
+		if (n > _capacity)
 		{
-			_size = n;
+			reserve(n);
 		}
-		std::cout << "Ran resize!" << std::endl;
+		if (n > _size)
+		{
+			for (size_t i = _size; i < n; ++i)
+			{
+				_pointer[i] = T();
+			}
+		}
+		_size = n;
 	}
 
 	iterator begin() const
