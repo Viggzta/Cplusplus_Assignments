@@ -3,19 +3,16 @@
 #include <iterator>
 #include <stdexcept>
 #include <vector>
-#include <cassert>
-
-#include "ListIter.hpp"
 
 template<class T>
-class List : std::iterator<std::random_access_iterator_tag, T>
+class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
 {
-	template <class T>
-	class Node;
-
 	template <class T>
 	class Link
 	{
+		template <class T>
+		class Node;
+
 		friend class List<T>;
 		Link* _next, *_prev;
 		Node<T>* Next() { return static_cast<Node<T>*>(_next); }
@@ -40,13 +37,104 @@ class List : std::iterator<std::random_access_iterator_tag, T>
 	};
 
 	template<class T>
-	class Node :Link<T>
+	class Node : Link<T>
 	{
 		friend class List<T>;
 		T _data;
 
 	public:
 		Node(const T& data) :_data(data) {};
+	};
+
+	template <class T>
+	class ListIter : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
+	{
+	private:
+		Node<T>* _linkPtr;
+
+	public:
+		typedef T value_type;
+		typedef ptrdiff_t difference_type;
+		typedef T* pointer;
+		typedef T& reference;
+		typedef std::bidirectional_iterator_tag iterator_category;
+
+		ListIter(Node<T>* p)
+		{
+			_linkPtr = p;
+		}
+
+		ListIter()
+		{
+			_linkPtr = nullptr;
+		}
+
+		ListIter(const ListIter& other)
+		{
+			_linkPtr = other._linkPtr;
+		}
+
+		ListIter& operator=(const ListIter& other)
+		{
+			_linkPtr = other._linkPtr;
+			return *this;
+		}
+
+		T & operator*()
+		{
+			return _linkPtr->_data;
+		}
+
+		T* operator->()
+		{
+			return &(_linkPtr->_data);
+		}
+
+		ListIter& operator++() // ++it
+		{
+			_linkPtr = _linkPtr._next;
+			return *this;
+		}
+
+		ListIter& operator--() // --it
+		{
+			_linkPtr = _linkPtr._prev;
+			return *this;
+		}
+
+		ListIter operator++(int) // it++
+		{
+			ListIter out = *this;
+			_linkPtr = _linkPtr._next;
+			return out;
+		}
+
+		ListIter operator--(int) // it--
+		{
+			ListIter out = *this;
+			_linkPtr = _linkPtr._prev;
+			return out;
+		}
+
+		friend bool operator==(const ListIter& lhs, const ListIter& rhs)
+		{
+			if (lhs._linkPtr == rhs._linkPtr)
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		friend bool operator!=(const ListIter& lhs, const ListIter& rhs)
+		{
+			if (lhs._linkPtr == rhs._linkPtr)
+			{
+				return false;
+			}
+
+			return true;
+		}
 	};
 
 protected:
@@ -66,7 +154,11 @@ public:
 
 	~List()
 	{
-		_head = new Link<T>();
+		if (_head == nullptr)
+		{
+			return;
+		}
+
 		Node<T> temp = _head._next;
 		// Loops through all elements and deletes them
 		while (temp != _head)
@@ -98,18 +190,20 @@ public:
 		_size = &other._size;
 	}
 
-	List(const char& other)
+	List(const char* other)
 	{
 		List<char>();
 
 		int offset = 0;
-		while ((other + offset) != '\0')
+		while (other[offset] != '\0')
 		{
-			push_back((other + offset));
+			//std::cout << "Pushing! " << other[offset] << std::endl;
+			push_back(other[offset]);
+			++offset;
 		}
 	}
 
-	List& operator=(const List& other)
+	List& operator=(const List* other)
 	{
 		~List();
 		List(other);
@@ -123,22 +217,22 @@ public:
 
 	T& front()
 	{
-		return _head._next._data;;
+		return _head._next._data;
 	}
 
 	T& back()
 	{
-		return _head._prev._data;;
+		return _head._prev._data;
 	}
 
-	const T& front()
+	const T& front() const
 	{
 		return _head._next._data;
 	}
 
-	const T& back()
+	const T& back() const
 	{
-		return head._prev._data;;
+		return head._prev._data;
 	}
 
 	iterator begin() const
@@ -151,10 +245,15 @@ public:
 		return _head;
 	}
 
-	bool empty() const noexcept	{		if (_head._next == _head)
+	bool empty() const noexcept
+	{
+		if (_head._next == _head)
 		{
 			return true;
-		}		return false;	}
+		}
+		return false;
+	}
+
 	size_t size() const noexcept
 	{
 		return _size;
@@ -162,13 +261,13 @@ public:
 
 	iterator insert(const iterator& pos, const T& value)
 	{
-		(&pos._ptr).insert(value);
+		(&pos._linkPtr).insert(value);
 		++_size;
 	}
 
 	iterator erase(const iterator& pos)
 	{
-		(&pos._ptr).erase(value);
+		(&pos._linkPtr).erase(value);
 		--_size;
 	}
 
@@ -182,19 +281,14 @@ public:
 		insert(begin(), value);
 	}
 
-	void push_front(T&& value)
-	{
-		insert(begin(), value);
-	}
-
 	void pop_back()
 	{
-		erase(end()._ptr->Prev());
+		erase(end()._linkPtr->Prev());
 	}
 
 	void pop_front()
 	{
-		erase(begin()._ptr);
+		erase(begin()._linkPtr);
 	}
 
 	friend bool operator==(const List& lhs, const List& other)
@@ -228,7 +322,7 @@ public:
 			cout << temp._data;
 			temp = temp._next;
 		}
-			
+
 		return cout;
 	};
 
