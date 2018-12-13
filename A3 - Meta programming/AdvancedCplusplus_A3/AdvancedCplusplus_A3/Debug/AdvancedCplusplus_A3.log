@@ -1,0 +1,17 @@
+﻿  Main.cpp
+b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(6): error C2760: syntax error: unexpected token '>', expected 'declaration'
+b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(10): error C2991: redefinition of template parameter 'T'
+  b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(10): note: see declaration of 'T'
+b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(18): error C2977: 'AddLoop': too many template arguments
+  b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(12): note: see declaration of 'AddLoop'
+b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(20): error C2953: 'AddLoop': class template has already been defined
+  b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(17): note: see declaration of 'AddLoop'
+b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(6): error C2597: illegal reference to non-static member 'AddLoop<T>::value'
+  b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(6): note: see declaration of 'AddLoop<T>::value'
+  b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\main.cpp(51): note: see reference to function template instantiation 'auto DoSum<std::vector<int,std::allocator<_Ty>>>(T)' being compiled
+          with
+          [
+              _Ty=int,
+              T=std::vector<int,std::allocator<int>>
+          ]
+b:\users\viggzta\source\repos\advancedcplusplus_a3\advancedcplusplus_a3\dosumlabb.h(6): error C2440: 'initializing': cannot convert from 'unknown' to 'int &'
