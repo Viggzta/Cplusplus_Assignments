@@ -49,6 +49,7 @@ void TestBaseType() {
 void TestDoSum() {
 	std::vector<int> v = { 1,2,3,-9 };
 	int sum = DoSum(v);
+	std::cout << sum << std::endl;
 	assert(sum == -3);
 }
 
