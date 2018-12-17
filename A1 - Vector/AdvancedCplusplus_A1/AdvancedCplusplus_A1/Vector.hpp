@@ -117,7 +117,7 @@ public:
 
 		for (size_t i = 0; i < _size; ++i)
 		{
-			_pointer[i] = other._pointer[i];
+			_pointer[i] = other._pointer[i]; // Ska detta verkligen vara här
 		}
 
 		return *this;

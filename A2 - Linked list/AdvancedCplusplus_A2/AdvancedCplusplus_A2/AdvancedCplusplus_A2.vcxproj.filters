@@ -32,11 +32,5 @@
     <ClInclude Include="TestHjälp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ListIter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkNode.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include <iterator>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 template<class T>
 class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
@@ -50,7 +51,7 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 	class ListIter : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
 	{
 	private:
-		Node<T>* _linkPtr;
+		Link<T>* _linkPtr;
 
 	public:
 		typedef T value_type;
@@ -59,7 +60,7 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 		typedef T& reference;
 		typedef std::bidirectional_iterator_tag iterator_category;
 
-		ListIter(Node<T>* p)
+		ListIter(Link<T>* p)
 		{
 			_linkPtr = p;
 		}
@@ -82,12 +83,13 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 
 		T & operator*()
 		{
-			return _linkPtr->_data;
+			T* out = static_cast<Node<T>>(_linkPtr)._data;
+			return out;
 		}
 
 		T* operator->()
 		{
-			return &(_linkPtr->_data);
+			return &(static_cast<Node<T>*>(_linkPtr)->_data);
 		}
 
 		ListIter& operator++() // ++it
@@ -150,23 +152,28 @@ public:
 		_head._next = _head;
 		_head._prev = _head;
 		_size = 0;
+		std::cout << "Ran default ctor." << std::endl;
 	}
 
 	~List()
 	{
-		if (_head == nullptr)
+		if (&_head == nullptr)
 		{
 			return;
 		}
 
-		Node<T> temp = _head._next;
-		// Loops through all elements and deletes them
-		while (temp != _head)
+		if (_size != 0)
 		{
-			temp = temp._next;
-			delete temp._prev;
+			Link<T>* temp = _head._next;
+			// Loops through all elements and deletes them
+			while (temp != &_head)
+			{
+				temp = temp._next;
+				delete temp._prev;
+			}
 		}
-		delete head;
+		delete &_head;
+		std::cout << "Ran destructor." << std::endl;
 	}
 
 	List(const List& other)
@@ -178,6 +185,8 @@ public:
 			push_back(temp);
 			temp = temp._next;
 		}
+
+		std::cout << "Ran copy ctor." << std::endl;
 	}
 
 	List(List&& other)
@@ -188,6 +197,8 @@ public:
 		}
 		_head = &other._head;
 		_size = &other._size;
+
+		std::cout << "Ran move ctor." << std::endl;
 	}
 
 	List(const char* other)
@@ -197,22 +208,33 @@ public:
 		int offset = 0;
 		while (other[offset] != '\0')
 		{
-			//std::cout << "Pushing! " << other[offset] << std::endl;
+			std::cout << "Pushing! " << other[offset] << std::endl;
 			push_back(other[offset]);
 			++offset;
 		}
+
+		std::cout << "Ran cstring ctor." << std::endl;
 	}
 
 	List& operator=(const List* other)
 	{
-		~List();
+		if (_head == nullptr)
+		{
+			~List();
+		}
+		
 		List(other);
+		std::cout << "Ran assign ctor." << std::endl;
+		return *this;
 	}
 
 	List& operator=(List&& other)
 	{
-		~List();
-		List(&other);
+		~List(); // Move operator
+		_head = other._head;
+		_size = other._size;
+		std::cout << "Ran move assign ctor." << std::endl;
+		return *this;
 	}
 
 	T& front()
@@ -274,6 +296,7 @@ public:
 	void push_back(const T& value)
 	{
 		insert(end(), value);
+		std::cout << "Push back." << std::endl;
 	}
 
 	void push_front(const T& value)

@@ -120,9 +120,7 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LinkNode.hpp" />
     <ClInclude Include="List.hpp" />
-    <ClInclude Include="ListIter.hpp" />
     <ClInclude Include="TestHjälp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
