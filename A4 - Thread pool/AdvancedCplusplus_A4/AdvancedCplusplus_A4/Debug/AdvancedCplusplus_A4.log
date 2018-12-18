@@ -1,0 +1,8 @@
+﻿  main.cpp
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(98): warning C4018: '<': signed/unsigned mismatch
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(99): warning C4018: '<': signed/unsigned mismatch
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(150): warning C4018: '<': signed/unsigned mismatch
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(151): warning C4018: '<': signed/unsigned mismatch
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(227): warning C4018: '<': signed/unsigned mismatch
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(228): warning C4018: '<': signed/unsigned mismatch
+  AdvancedCplusplus_A4.vcxproj -> B:\Users\Viggzta\source\repos\AdvancedCplusplus_A4\Debug\AdvancedCplusplus_A4.exe
