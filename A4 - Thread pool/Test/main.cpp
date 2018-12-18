@@ -14,9 +14,9 @@
 
 #include "config.h"
 #include "lodepng.h"
-#ifndef BRUTEFORCE
+//#ifndef BRUTEFORCE
 #include "threadpool.h"
-#endif
+//#endif
 
 using uint = unsigned int;
 using uchar = unsigned char;
@@ -272,6 +272,7 @@ int main(int argc, const char * argv[])
     std::vector<uchar> buffer_dest(buffer_src.size(), 255);
     
     // Create thread pool and result vector
+#define THREADPOOL
 #ifdef THREADPOOL
 #ifdef NBRTHREADS_AUTO
     ThreadPool tp(std::thread::hardware_concurrency());

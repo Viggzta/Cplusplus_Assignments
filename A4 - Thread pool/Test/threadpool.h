@@ -9,36 +9,67 @@
 #include <functional>
 #include <utility>
 #include <future>
+#include <cstdint>
 
-template <class T>
 class ThreadPool
 { /* todo */
 private:
 	class WorkItem
 	{
+	private:
+		ThreadPool* _ownerThreadpool;
+	public:
+		WorkItem(ThreadPool* ownerPool)
+		{
+			_ownerThreadpool = ownerPool;
+		}
 
+		void operator()()
+		{
+			std::function<void()> func;
+			while (_ownerThreadpool->_running)
+			{
+				std::unique_lock<std::mutex> lock(_ownerThreadpool->_mutex);
+				if (_ownerThreadpool->_queue.empty())
+				{
+					_ownerThreadpool->_conditionLock.wait(lock);
+				}
+				func = _ownerThreadpool->_queue.front();
+				_ownerThreadpool->_queue.pop();
+				func();
+			}
+		}
 	};
 
 	bool _running;
 	std::vector<std::thread> _threads;
-	std::queue<T> _queue;
+	std::queue<std::function<void()>> _queue;
 	std::mutex _mutex;
+	std::condition_variable _conditionLock;
+
 public:
-	ThreadPool(int n)
+	ThreadPool(unsigned int n)
 	{
 		_threads = std::vector<std::thread>(n);
 		_running = true;
 		for (size_t i = 0; i < n; i++)
 		{
-			_threads[i] = std::thread();
+			_threads[i] = std::thread(WorkItem(this));
 		}
 	}
 
-	template <class T, class ... Args>
-	enqueue(T f, Args ... args)
+	ThreadPool(const ThreadPool &) = delete;
+	ThreadPool(ThreadPool &&) = delete;
+
+	ThreadPool & operator=(const ThreadPool &) = delete;
+	ThreadPool & operator=(ThreadPool &&) = delete;
+
+	template <class F, class ... Args>
+	auto enqueue(F f, Args ... args)
 	{
-		std::function<T(f(args...))()> func = std::bind(std::forward<T>(f), std::forward<Args>(args)...);
-		auto task = std::make_shared<std::packaged_task<T(f(args...))()>>(func);
+		std::function<F(args...)> func = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
+		auto task = std::make_shared<std::packaged_task<F()>>(func);
+		// Add task to queue
 	}
 };
 

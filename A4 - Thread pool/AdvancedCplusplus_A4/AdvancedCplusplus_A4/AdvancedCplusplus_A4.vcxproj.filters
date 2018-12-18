@@ -21,7 +21,7 @@
     <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\lodepng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\threadpool.h">
+    <ClInclude Include="..\..\Test\threadpool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

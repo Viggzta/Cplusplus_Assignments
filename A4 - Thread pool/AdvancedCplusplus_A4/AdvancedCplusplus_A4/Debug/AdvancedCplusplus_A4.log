@@ -5,4 +5,27 @@ b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(150):
 b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(151): warning C4018: '<': signed/unsigned mismatch
 b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(227): warning C4018: '<': signed/unsigned mismatch
 b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(228): warning C4018: '<': signed/unsigned mismatch
-  AdvancedCplusplus_A4.vcxproj -> B:\Users\Viggzta\source\repos\AdvancedCplusplus_A4\Debug\AdvancedCplusplus_A4.exe
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\threadpool.h(69): error C2440: '<function-style-cast>': cannot convert from 'initializer list' to 'std::reference_wrapper<uint (const uchar *,uchar *,const ImgDim &,uint,uint,uint,uint,uint)>'
+  b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\threadpool.h(69): note: No constructor could take the source type, or constructor overload resolution was ambiguous
+  b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(335): note: see reference to function template instantiation 'auto ThreadPool::enqueue<std::reference_wrapper<uint (const uchar *,uchar *,const ImgDim &,uint,uint,uint,uint,uint)>,_Ty*,_Ty*,ImgDim,uint,uint,uint,uint,int>(F,_Ty *,_Ty *,ImgDim,uint,uint,uint,uint,int)' being compiled
+          with
+          [
+              _Ty=unsigned char,
+              F=std::reference_wrapper<uint (const uchar *,uchar *,const ImgDim &,uint,uint,uint,uint,uint)>
+          ]
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\threadpool.h(69): error C2974: 'std::function': invalid template argument for '_Fty', type expected
+  b:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.12.25827\include\functional(679): note: see declaration of 'std::function'
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\threadpool.h(69): error C2514: 'std::function': class has no constructors
+  b:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.12.25827\include\functional(679): note: see declaration of 'std::function'
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(327): error C2672: 'std::vector<std::future<uint>,std::allocator<_Ty>>::emplace_back': no matching overloaded function found
+          with
+          [
+              _Ty=std::future<uint>
+          ]
+b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(336): error C2893: Failed to specialize function template 'decltype(auto) std::vector<std::future<uint>,std::allocator<_Ty>>::emplace_back(_Valty &&...)'
+          with
+          [
+              _Ty=std::future<uint>
+          ]
+  b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(336): note: With the following template arguments:
+  b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\test\main.cpp(336): note: '_Valty={void}'

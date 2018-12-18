@@ -118,7 +118,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\config.h" />
     <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\lodepng.h" />
-    <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\threadpool.h" />
+    <ClInclude Include="..\..\Test\threadpool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\lodepng.cpp" />
