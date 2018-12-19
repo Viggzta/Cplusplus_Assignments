@@ -6,7 +6,7 @@
 #include <iostream>
 
 template<class T>
-class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
+class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
 {
 	template <class T>
 	class Link
@@ -48,7 +48,7 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 	};
 
 	template <class T>
-	class ListIter : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
+	class ListIter //: std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
 	{
 	private:
 		Link<T>* _linkPtr;
@@ -83,8 +83,7 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 
 		T & operator*()
 		{
-			T out(_linkPtr->_data);
-			return out;
+			return static_cast<Node<T>*>(_linkPtr)->_data;
 		}
 
 		T* operator->()
@@ -94,27 +93,27 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 
 		ListIter& operator++() // ++it
 		{
-			_linkPtr = _linkPtr._next;
+			_linkPtr = _linkPtr->_next;
 			return *this;
 		}
 
 		ListIter& operator--() // --it
 		{
-			_linkPtr = _linkPtr._prev;
+			_linkPtr = _linkPtr->_prev;
 			return *this;
 		}
 
 		ListIter operator++(int) // it++
 		{
 			ListIter out = *this;
-			_linkPtr = _linkPtr._next;
+			_linkPtr = _linkPtr->_next;
 			return out;
 		}
 
 		ListIter operator--(int) // it--
 		{
 			ListIter out = *this;
-			_linkPtr = _linkPtr._prev;
+			_linkPtr = _linkPtr->_prev;
 			return out;
 		}
 
@@ -148,7 +147,7 @@ public:
 
 	List()
 	{
-		_head = new Link<T>();
+		_head = Link<T>();
 		_head._next = &_head;
 		_head._prev = &_head;
 		_size = 0;
@@ -259,12 +258,12 @@ public:
 
 	iterator begin() const
 	{
-		return _head.Next();
+		return iterator(_head._next);
 	}
 
 	iterator end() const
 	{
-		return _head;
+		return iterator(_head);
 	}
 
 	bool empty() const noexcept
@@ -283,14 +282,16 @@ public:
 
 	iterator insert(const iterator& pos, const T& value)
 	{
-		(&pos._linkPtr).insert(value);
+		pos._linkPtr->insert(value);
 		++_size;
+		return *this;
 	}
 
 	iterator erase(const iterator& pos)
 	{
-		(&pos._linkPtr).erase(value);
+		pos._linkPtr->erase();
 		--_size;
+		return *this;
 	}
 
 	void push_back(const T& value)
