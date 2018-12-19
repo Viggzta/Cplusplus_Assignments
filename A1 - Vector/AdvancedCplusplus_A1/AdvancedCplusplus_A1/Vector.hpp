@@ -104,21 +104,15 @@ public:
 
 	Vector& operator=(Vector&& other)
 	{
-		if (*this == other)
-		{
-			return *this;
-		}
-
 		this->~Vector();
 
 		_capacity = other._capacity;
 		_size = other._size;
-		_pointer = new T[_capacity];
+		_pointer = other._pointer;
 
-		for (size_t i = 0; i < _size; ++i)
-		{
-			_pointer[i] = other._pointer[i]; // Ska detta verkligen vara här
-		}
+		other._capacity = 0;
+		other._size = 0;
+		other._pointer = nullptr;
 
 		return *this;
 	}

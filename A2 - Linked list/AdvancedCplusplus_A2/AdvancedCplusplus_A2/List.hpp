@@ -83,7 +83,7 @@ class List : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&
 
 		T & operator*()
 		{
-			T* out = static_cast<Node<T>>(_linkPtr)._data;
+			T out(_linkPtr->_data);
 			return out;
 		}
 
@@ -149,8 +149,8 @@ public:
 	List()
 	{
 		_head = new Link<T>();
-		_head._next = _head;
-		_head._prev = _head;
+		_head._next = &_head;
+		_head._prev = &_head;
 		_size = 0;
 		std::cout << "Ran default ctor." << std::endl;
 	}
@@ -168,8 +168,8 @@ public:
 			// Loops through all elements and deletes them
 			while (temp != &_head)
 			{
-				temp = temp._next;
-				delete temp._prev;
+				temp = temp->_next;
+				delete temp->_prev;
 			}
 		}
 		delete &_head;
@@ -218,7 +218,7 @@ public:
 
 	List& operator=(const List* other)
 	{
-		if (_head == nullptr)
+		if (_head != nullptr)
 		{
 			~List();
 		}
