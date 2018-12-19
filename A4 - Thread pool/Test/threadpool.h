@@ -29,6 +29,7 @@ private:
 			std::function<void()> func;
 			while (_ownerThreadpool->_running)
 			{
+				// Behövs det mutex?
 				std::unique_lock<std::mutex> lock(_ownerThreadpool->_mutex);
 				if (_ownerThreadpool->_queue.empty())
 				{
