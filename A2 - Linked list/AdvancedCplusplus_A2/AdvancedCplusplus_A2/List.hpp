@@ -50,17 +50,16 @@ class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, 
 	template <class T>
 	class ListIter //: std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
 	{
-	private:
+	public:
 		Link<T>* _linkPtr;
 
-	public:
 		typedef T value_type;
 		typedef ptrdiff_t difference_type;
 		typedef T* pointer;
 		typedef T& reference;
 		typedef std::bidirectional_iterator_tag iterator_category;
 
-		ListIter(Link<T>* p)
+		ListIter(Node<T>* p)
 		{
 			_linkPtr = p;
 		}
@@ -258,12 +257,12 @@ public:
 
 	iterator begin() const
 	{
-		return iterator(_head._next);
+		return _next;
 	}
 
 	iterator end() const
 	{
-		return iterator(_head);
+		return _head;
 	}
 
 	bool empty() const noexcept
@@ -284,7 +283,7 @@ public:
 	{
 		pos._linkPtr->insert(value);
 		++_size;
-		return *this;
+		return pos;
 	}
 
 	iterator erase(const iterator& pos)
