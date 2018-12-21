@@ -21,12 +21,6 @@ class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, 
 
 		void insert(const T& value)
 		{
-			Node<T> newNode = Node<T>();
-			newNode._data = value;
-			newNode._next = this;
-			newNode._prev = _prev;
-			_prev->_next = newNode;
-			_prev = newNode;
 		}
 
 		void erase()
@@ -45,6 +39,16 @@ class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, 
 
 	public:
 		Node(const T& data) :_data(data) {};
+
+		void insert(const T& value)
+		{
+			Node<T>* newNode = new Node<T>();
+			newNode->_data = value;
+			newNode->_next = this;
+			newNode->_prev = _prev;
+			_prev->_next = Link<T>(*newNode);
+			_next->_prev = Link<T>(*newNode);
+		}
 	};
 
 	template <class T>
@@ -59,7 +63,7 @@ class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, 
 		typedef T& reference;
 		typedef std::bidirectional_iterator_tag iterator_category;
 
-		ListIter(Node<T>* p)
+		ListIter(Link<T>* p)
 		{
 			_linkPtr = p;
 		}
@@ -257,12 +261,12 @@ public:
 
 	iterator begin() const
 	{
-		return _next;
+		return ListIter<T>(_head._next);
 	}
 
-	iterator end() const
+	const iterator end() const
 	{
-		return _head;
+		return ListIter<T>(_head._next->_prev);
 	}
 
 	bool empty() const noexcept
