@@ -6,14 +6,14 @@
 #include <iostream>
 
 template<class T>
-class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
+class List
 {
+	template <class T>
+	class Node;
+
 	template <class T>
 	class Link
 	{
-		template <class T>
-		class Node;
-
 		friend class List<T>;
 		Link* _next, *_prev;
 		Node<T>* Next() { return static_cast<Node<T>*>(_next); }
@@ -21,6 +21,12 @@ class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, 
 
 		void insert(const T& value)
 		{
+			// Prev / Next kopplas rätt (dubbelkollat)
+			Node<T>* newNode = new Node<T>(value);
+			newNode->_next = this;
+			newNode->_prev = _prev;
+			_prev->_next = newNode;
+			this->_prev = newNode;
 		}
 
 		void erase()
@@ -39,20 +45,10 @@ class List// : std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, 
 
 	public:
 		Node(const T& data) :_data(data) {};
-
-		void insert(const T& value)
-		{
-			Node<T>* newNode = new Node<T>();
-			newNode->_data = value;
-			newNode->_next = this;
-			newNode->_prev = _prev;
-			_prev->_next = Link<T>(*newNode);
-			_next->_prev = Link<T>(*newNode);
-		}
 	};
 
 	template <class T>
-	class ListIter //: std::iterator<std::bidirectional_iterator_tag, T, ptrdiff_t, T*, T&>
+	class ListIter
 	{
 	public:
 		Link<T>* _linkPtr;
@@ -159,10 +155,7 @@ public:
 
 	~List()
 	{
-		if (&_head == nullptr)
-		{
-			return;
-		}
+		std::cout << "Bout to destruct." << std::endl;
 
 		if (_size != 0)
 		{
@@ -174,7 +167,6 @@ public:
 				delete temp->_prev;
 			}
 		}
-		delete &_head;
 		std::cout << "Ran destructor." << std::endl;
 	}
 
@@ -264,9 +256,9 @@ public:
 		return ListIter<T>(_head._next);
 	}
 
-	const iterator end() const
+	iterator end() const
 	{
-		return ListIter<T>(_head._next->_prev);
+		return ListIter<T>(_head); // Varför går inte detta at const_cast:a?
 	}
 
 	bool empty() const noexcept
