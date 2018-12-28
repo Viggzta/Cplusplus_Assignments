@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdlib>
+#include <cassert>
 #include <iterator>
 #include <stdexcept>
 #include <vector>
@@ -146,7 +147,6 @@ public:
 
 	List()
 	{
-		_head = Link<T>();
 		_head._next = &_head;
 		_head._prev = &_head;
 		_size = 0;
@@ -155,8 +155,6 @@ public:
 
 	~List()
 	{
-		std::cout << "Bout to destruct." << std::endl;
-
 		if (_size != 0)
 		{
 			Link<T>* temp = _head._next;
@@ -185,10 +183,6 @@ public:
 
 	List(List&& other)
 	{
-		if (_head == null)
-		{
-			delete _head;
-		}
 		_head = &other._head;
 		_size = &other._size;
 
@@ -197,7 +191,9 @@ public:
 
 	List(const char* other)
 	{
-		List<char>();
+		_head._next = &_head;
+		_head._prev = &_head;
+		_size = 0;
 
 		int offset = 0;
 		while (other[offset] != '\0')
@@ -210,21 +206,43 @@ public:
 		std::cout << "Ran cstring ctor." << std::endl;
 	}
 
-	List& operator=(const List* other)
+	List& operator=(const List& other)
 	{
-		if (_head != nullptr)
+		if (_size != 0)
 		{
-			~List();
+			Link<T>* temp = _head._next;
+			// Loops through all elements and deletes them
+			while (temp != &_head)
+			{
+				temp = temp->_next;
+				delete temp->_prev;
+			}
 		}
 		
-		List(other);
+		_head = other._head;
+		Link<T>* temp2 = other._head._next;
+		while (temp2 != &other._head)
+		{
+			push_back(static_cast<Node<T>*>(temp2)->_data);
+			temp2 = temp2._next;
+		}
 		std::cout << "Ran assign ctor." << std::endl;
 		return *this;
 	}
 
 	List& operator=(List&& other)
 	{
-		~List(); // Move operator
+		if (_size != 0)
+		{
+			Link<T>* temp = _head._next;
+			// Loops through all elements and deletes them
+			while (temp != &_head)
+			{
+				temp = temp->_next;
+				delete temp->_prev;
+			}
+		}
+
 		_head = other._head;
 		_size = other._size;
 		std::cout << "Ran move assign ctor." << std::endl;
@@ -256,9 +274,9 @@ public:
 		return ListIter<T>(_head._next);
 	}
 
-	iterator end() const
+	ListIter<T> end() const// Tog bort const pga bugg
 	{
-		return ListIter<T>(_head); // Varför går inte detta at const_cast:a?
+		return ListIter<T>( const_cast<Link<T>*>(&_head) ); // Varför går detta att const_cast:a?
 	}
 
 	bool empty() const noexcept
@@ -292,7 +310,6 @@ public:
 	void push_back(const T& value)
 	{
 		insert(end(), value);
-		std::cout << "Push back." << std::endl;
 	}
 
 	void push_front(const T& value)
@@ -348,6 +365,16 @@ public:
 	void Check() const
 	{
 		assert(Invariant());
+	}
+
+	bool Invariant() const
+	{
+		if (size == 0)
+		{
+			return this->empty();
+		}
+
+		return !(this->empty());
 	}
 
 	void swap(List<T>& lhs, List<T>& rhs)

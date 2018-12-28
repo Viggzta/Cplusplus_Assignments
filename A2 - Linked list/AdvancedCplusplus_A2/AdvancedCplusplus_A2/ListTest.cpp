@@ -24,28 +24,28 @@ void TestList() {
 		const List<char> BarC("Bar");
 	}
 
-//	//Typedef, måste fungera för att testprogrammet ska fungera!
-//	{
-//		std::string strHej("hej");
-//		List<std::string> a{}; a.push_back(strHej);
-//		List<std::string>::iterator i;
-//		i = a.begin();
-//		assert(*i == strHej);
-//	}
-//	//Tom testning av att alla constructorer och tilldelningsoperaoterer finns!
-//	{
-//		Cont a{};
-//		Cont b{ a };
-//		Cont c{ "hej" };
-//		Cont d{ std::move(c) };
-//		a = b;
-//		c = "hej";
-//		b = std::move(c);
-//		c.Check();
-//		d.Check();
-//		a.Check();
-//		b.Check();
-//	}
+	//Typedef, måste fungera för att testprogrammet ska fungera!
+	{
+		std::string strHej("hej");
+		List<std::string> a{}; a.push_back(strHej);
+		List<std::string>::iterator i;
+		i = a.begin();
+		assert(*i == strHej);
+	}
+	//Tom testning av att alla constructorer och tilldelningsoperaoterer finns!
+	{
+		Cont a{};
+		Cont b{ a };
+		Cont c{ "hej" };
+		Cont d{ std::move(c) };
+		a = b;
+		c = "hej";
+		b = std::move(c);
+		c.Check();
+		d.Check();
+		a.Check();
+		b.Check();
+	}
 //	//-	~List<char>() Kom ihåg destruktorn!
 //	{
 //		auto x = new List<char>("hej");

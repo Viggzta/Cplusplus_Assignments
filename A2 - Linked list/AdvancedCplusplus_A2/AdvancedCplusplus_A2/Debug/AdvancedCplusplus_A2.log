@@ -1,39 +1,17 @@
 ﻿  ListTest.cpp
-b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(261): error C2440: '<function-style-cast>': cannot convert from 'const List<char>::Link<T>' to 'List<char>::ListIter<T>'
+b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(227): error C2228: left of '._next' must have class/struct/union
+  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(227): note: type is 'List<char>::Link<T> *'
           with
           [
               T=char
           ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(261): note: No constructor could take the source type, or constructor overload resolution was ambiguous
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(260): note: while compiling class template member function 'List<char>::ListIter<T> List<T>::end(void) const'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(294): note: see reference to function template instantiation 'List<char>::ListIter<T> List<T>::end(void) const' being compiled
-          with
-          [
-              T=char
-          ]
+  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(227): note: did you intend to use '->' instead?
+  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(210): note: while compiling class template member function 'List<char> &List<char>::operator =(const List<char> &)'
+  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\listtest.cpp(41): note: see reference to function template instantiation 'List<char> &List<char>::operator =(const List<char> &)' being compiled
   b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\testhjälp.h(4): note: see reference to class template instantiation 'List<char>' being compiled
+  Generating Code...
+  Compiling...
   ListIterTest.cpp
-b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(261): error C2440: '<function-style-cast>': cannot convert from 'const List<char>::Link<T>' to 'List<char>::ListIter<T>'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(261): note: No constructor could take the source type, or constructor overload resolution was ambiguous
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(260): note: while compiling class template member function 'List<char>::ListIter<T> List<T>::end(void) const'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\listitertest.cpp(22): note: see reference to function template instantiation 'List<char>::ListIter<T> List<T>::end(void) const' being compiled
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\testhjälp.h(4): note: see reference to class template instantiation 'List<char>' being compiled
   Generating Code...
   Compiling...
   Main.cpp
