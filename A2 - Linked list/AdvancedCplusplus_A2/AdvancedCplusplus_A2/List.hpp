@@ -36,6 +36,11 @@ class List
 			_prev->_next = _next;
 			_next->_prev = temp;
 		}
+
+		Node<T> asNode()
+		{
+			return static_cast<Node<T>>(this);
+		}
 	};
 
 	template<class T>
@@ -159,10 +164,14 @@ public:
 		{
 			Link<T>* temp = _head._next;
 			// Loops through all elements and deletes them
+			std::cout << "Head on " << &_head << std::endl;
 			while (temp != &_head)
 			{
+				std::cout << "temp on " << temp << std::endl;
 				temp = temp->_next;
-				delete temp->_prev;
+				std::cout << "temp move " << temp << std::endl;
+				std::cout << "Delete on " << temp->_prev << std::endl;
+				delete temp->Prev();
 			}
 		}
 		std::cout << "Ran destructor." << std::endl;
@@ -170,12 +179,17 @@ public:
 
 	List(const List& other)
 	{
-		_head = other._head;
-		Link<T> temp = other._head._next;
-		while (temp != other._head)
+		this->~List();
+
+		_head._next = &_head;
+		_head._prev = &_head;
+		_size = 0;
+
+		Link<T>* temp = other._head._next;
+		while (temp != &other._head)
 		{
-			push_back(temp);
-			temp = temp._next;
+			push_back(static_cast<Node<T>*>(temp)->_data);
+			temp = temp->_next;
 		}
 
 		std::cout << "Ran copy ctor." << std::endl;
@@ -183,8 +197,8 @@ public:
 
 	List(List&& other)
 	{
-		_head = &other._head;
-		_size = &other._size;
+		_head = other._head;
+		_size = other._size;
 
 		std::cout << "Ran move ctor." << std::endl;
 	}
@@ -208,23 +222,22 @@ public:
 
 	List& operator=(const List& other)
 	{
-		if (_size != 0)
+		if (&_head == &other._head)
 		{
-			Link<T>* temp = _head._next;
-			// Loops through all elements and deletes them
-			while (temp != &_head)
-			{
-				temp = temp->_next;
-				delete temp->_prev;
-			}
+			return *this;
 		}
-		
-		_head = other._head;
+
+		this->~List();
+
+		_head._next = &_head;
+		_head._prev = &_head;
+		_size = 0;
 		Link<T>* temp2 = other._head._next;
 		while (temp2 != &other._head)
 		{
-			push_back(static_cast<Node<T>*>(temp2)->_data);
-			temp2 = temp2._next;
+			std::cout << "Adding stuff at " << temp2 << std::endl;
+			this->push_back(static_cast<Node<T>*>(temp2)->_data);
+			temp2 = temp2->_next;
 		}
 		std::cout << "Ran assign ctor." << std::endl;
 		return *this;
@@ -251,22 +264,22 @@ public:
 
 	T& front()
 	{
-		return _head._next._data;
+		return _head.Next()->_data;
 	}
 
 	T& back()
 	{
-		return _head._prev._data;
+		return _head.Prev()->_data;
 	}
 
 	const T& front() const
 	{
-		return _head._next._data;
+		return _head.Next()->_data;
 	}
 
 	const T& back() const
 	{
-		return head._prev._data;
+		return head.Prev()->_data;
 	}
 
 	iterator begin() const
@@ -281,7 +294,7 @@ public:
 
 	bool empty() const noexcept
 	{
-		if (_head._next == _head)
+		if (_head._next == &_head)
 		{
 			return true;
 		}
@@ -333,16 +346,27 @@ public:
 		{
 			return false;
 		}
-		Node<T> temp1 = lhs._head._next;
-		Node<T> temp2 = other._head._next;
-		bool equal = (temp1._data == temp2._data);
-		while (equal)
+
+		if (lhs.size() == 0)
 		{
-			temp1 = temp1._next;
-			temp2 = temp2._next;
-			equal = (temp1._data == temp2._data);
+			return true;
 		}
-		return equal;
+
+		bool equal = false;
+		auto a = lhs.begin(), b = other.begin();
+		while (a != lhs.end())
+		{
+			equal = (a._linkPtr == b._linkPtr);
+			if (!equal)
+			{
+				return false;
+			}
+
+			++a;
+			++b;
+		}
+
+		return true;
 	}
 
 	friend bool operator!=(const List& lhs, const List& other)
@@ -369,7 +393,7 @@ public:
 
 	bool Invariant() const
 	{
-		if (size == 0)
+		if (_size == 0)
 		{
 			return this->empty();
 		}

@@ -1,18 +1,7 @@
-﻿  ListTest.cpp
-b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(227): error C2228: left of '._next' must have class/struct/union
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(227): note: type is 'List<char>::Link<T> *'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(227): note: did you intend to use '->' instead?
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(210): note: while compiling class template member function 'List<char> &List<char>::operator =(const List<char> &)'
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\listtest.cpp(41): note: see reference to function template instantiation 'List<char> &List<char>::operator =(const List<char> &)' being compiled
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\testhjälp.h(4): note: see reference to class template instantiation 'List<char>' being compiled
-  Generating Code...
-  Compiling...
-  ListIterTest.cpp
+﻿  ListIterTest.cpp
   Generating Code...
   Compiling...
   Main.cpp
+  ListTest.cpp
   Generating Code...
+  AdvancedCplusplus_A2.vcxproj -> B:\MAPP\Game-Projects\Cplusplus_Assignments\A2 - Linked list\AdvancedCplusplus_A2\Debug\AdvancedCplusplus_A2.exe

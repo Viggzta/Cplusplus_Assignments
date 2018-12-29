@@ -46,29 +46,30 @@ void TestList() {
 		a.Check();
 		b.Check();
 	}
-//	//-	~List<char>() Kom ihåg destruktorn!
-//	{
-//		auto x = new List<char>("hej");
-//		noexcept(x -> ~List()); //Kolla om det kompilerar!
-//		delete x;
-//	}
-//
-//	//-	copy constructor  , move
-//	{
-//		Cont a("Hej"), c("Foo");
-//		c = a;
-//		assert(c == "Hej" && a == c);
-//		a.front() = 'a';
-//		assert(a == "aej" && c == "Hej");
-//
-//		Cont m(std::move(a));
-//		m.Check(); a.Check();
-//		assert(m == "aej" && a == "");
-//		//Move empty!
-//		Cont mm(std::move(a));
-//		mm.Check(); a.Check();
-//		assert(mm == "" && a == "");
-//	}
+	////-	~List<char>() Kom ihåg destruktorn!
+	//{
+	//	auto x = new List<char>("hej");
+	//	noexcept(x -> ~List()); //Kolla om det kompilerar!
+	//	delete x;
+	//	
+	//}
+
+	////-	copy constructor  , move
+	//{
+	//	Cont a("Hej"), c("Foo");
+	//	c = a;
+	//	assert(c == "Hej" && a == c);
+	//	a.front() = 'a';
+	//	assert(a == "aej" && c == "Hej");
+
+	//	Cont m(std::move(a));
+	//	m.Check(); a.Check();
+	//	assert(m == "aej" && a == "");
+	//	//Move empty!
+	//	Cont mm(std::move(a));
+	//	mm.Check(); a.Check();
+	//	assert(mm == "" && a == "");
+	//}
 //
 //	//-	List<char>(char *)
 //	{
