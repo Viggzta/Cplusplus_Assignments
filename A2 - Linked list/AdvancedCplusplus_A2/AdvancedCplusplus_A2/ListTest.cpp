@@ -40,171 +40,174 @@ void TestList() {
 		Cont d{ std::move(c) };
 		a = b;
 		c = "hej";
+		/*std::cout << "test" << std::endl;*/
 		b = std::move(c);
 		c.Check();
 		d.Check();
 		a.Check();
 		b.Check();
 	}
-	////-	~List<char>() Kom ihåg destruktorn!
+	//-	~List<char>() Kom ihåg destruktorn!
+	{
+		auto x = new List<char>("hej");
+		noexcept(x -> ~List()); //Kolla om det kompilerar!
+		delete x;
+		
+	}
+
+	//-	copy constructor  , move
+	{
+		Cont a("Hej"), c("Foo");
+		c = a;
+		assert(c == "Hej" && a == c);
+		a.front() = 'a';
+		assert(a == "aej" && c == "Hej");
+
+		Cont m(std::move(a));
+		m.Check(); a.Check();
+		assert(m == "aej" && a == "");
+		//Move empty!
+		a.printContent();
+		Cont mm(std::move(a));
+		mm.Check(); a.Check();
+		assert(mm == "" && a == "");
+	}
+
+	//-	List<char>(char *)
+	{
+		List<char> v1("foo"); assert(v1 == "foo");
+		List<char> vec(v1); assert(vec == "foo");
+		List<char> v3("bar");  assert(v3 == "bar");
+	}
+	//	-	operator =(Sträng sträng)
+	{
+		List<char> Foo("Foo");
+		const List<char> FooC("Foo");
+		List<char> Bar("Bar");
+		const List<char> BarC("Bar");
+		Cont a("hej");
+		Bar = a;
+		Bar.Check();
+		assert(Bar == "hej");
+		assert((Bar = a) == a);
+		assert((Bar = Bar) == a);	//self assignment
+	}
+
+	//move!
+	{
+		List<char> Foo("Foo");
+		List<char> Bar("Bar");
+
+		Bar = std::move(Foo);
+		Bar.Check(); Foo.Check();
+		assert(Bar == "Foo" && Foo == "");
+
+
+		//move empty
+		Bar = std::move(Foo);
+		Bar.Check(); Foo.Check();
+		assert(Bar == "" && Foo == "");
+
+	}
+
+	//move const
+	{
+		List<char> Foo("Foo");
+		const List<char> FooC("Foo");
+		List<char> Bar("Bar");
+		const List<char> BarC("Bar");
+		Bar = BarC;
+		Bar = std::move(FooC);
+		Bar.Check(); FooC.Check();
+		assert(Bar == "Foo" && FooC == "Foo");
+	}
+
+	// front, back;
+	{
+		Cont a("Hej");
+		assert(a.front() == 'H' && a.back() == 'j');
+		a.front() = 'x'; assert(a == "xej");
+	}
+
+	//// insert erase (fel?)
 	//{
-	//	auto x = new List<char>("hej");
-	//	noexcept(x -> ~List()); //Kolla om det kompilerar!
-	//	delete x;
-	//	
+	//	Cont a("abcdXe");
+	//	auto it = ++++a.begin(); //c
+	//	it = a.insert(it, 'X');
+	//	a.Check();
+	//	assert(*it == 'X');
+	//	assert(*it == 'X' && a == "abXcde");
+	//	a.Check();
+	//	it = ----a.end(); //d
+	//	it = a.erase(it);
+	//	a.Check();
+	//	assert(*it == 'e'&& a == "abXce");
+
+	//}
+	//-	push och pop
+	{
+		Cont a{};
+		char c = 'b';
+		a.push_front(c);    //To use & version
+		assert(a == "b");
+		a.push_back('c');   //WIll use && version
+		assert(a == "bc");
+		a.push_front('a');
+		assert(a == "abc");
+		a.pop_front();
+		assert(a == "bc");
+		a.pop_back();
+		assert(a == "b");
+		a.push_back('x');
+		assert(a == "bx");
+	}
+
+	//size och empty
+	{
+		List<char> Bar("Bar");
+		const List<char> BarC("Bar");
+		Cont a{};
+		a.Check();
+
+		//-	size();
+		assert(3 == BarC.size() && 0 == a.size());
+		//-	empty();
+		assert(!BarC.empty() && a.empty());
+
+	}
+
+	////Check const of some functions!
+	//{
+	//	List<char> Foo("Foo");
+	//	const List<char> FooC("Foo");
+	//	List<char> Bar("Bar");
+	//	const List<char> BarC("Bar");
+	//	BarC.front();
+	//	assert(!IsConstOrConstRefFun(Bar.front()));
+	//	assert(IsConstOrConstRefFun(BarC.front()));
+	//	assert(!IsConstOrConstRefFun(Bar.back()));
+	//	assert(IsConstOrConstRefFun(BarC.back()));
 	//}
 
-	////-	copy constructor  , move
 	//{
-	//	Cont a("Hej"), c("Foo");
-	//	c = a;
-	//	assert(c == "Hej" && a == c);
-	//	a.front() = 'a';
-	//	assert(a == "aej" && c == "Hej");
-
-	//	Cont m(std::move(a));
-	//	m.Check(); a.Check();
-	//	assert(m == "aej" && a == "");
-	//	//Move empty!
-	//	Cont mm(std::move(a));
-	//	mm.Check(); a.Check();
-	//	assert(mm == "" && a == "");
+	//	List<char> Foo("Foo");
+	//	List<char> Bar("Bar");
+	//	swap(Foo, Bar);
+	//	Foo.Check();
+	//	Bar.Check();
+	//	assert(Foo == "Bar" && Bar == "Foo");
+	//	swap(Foo, Bar);
+	//	assert(Foo == "Foo" && Bar == "Bar");
+	//	Bar = "";
+	//	assert(Foo == "Foo" && Bar == "");
+	//	swap(Foo, Bar);
+	//	Foo.Check();
+	//	Bar.Check();
+	//	assert(Foo == "" && Bar == "Foo");
+	//	Bar = "";
+	//	swap(Foo, Bar);
+	//	assert(Foo == "" && Bar == "");
 	//}
-//
-//	//-	List<char>(char *)
-//	{
-//		List<char> v1("foo"); assert(v1 == "foo");
-//		List<char> vec(v1); assert(vec == "foo");
-//		List<char> v3("bar");  assert(v3 == "bar");
-//	}
-//	//	-	operator =(Sträng sträng)
-//	{
-//		List<char> Foo("Foo");
-//		const List<char> FooC("Foo");
-//		List<char> Bar("Bar");
-//		const List<char> BarC("Bar");
-//		Cont a("hej");
-//		Bar = a;
-//		Bar.Check();
-//		assert(Bar == "hej");
-//		assert((Bar = a) == a);
-//		assert((Bar = Bar) == a);	//self assignment
-//	}
-//
-//	//move!
-//	{
-//		List<char> Foo("Foo");
-//		List<char> Bar("Bar");
-//
-//		Bar = std::move(Foo);
-//		Bar.Check(); Foo.Check();
-//		assert(Bar == "Foo" && Foo == "");
-//
-//
-//		//move empty
-//		Bar = std::move(Foo);
-//		Bar.Check(); Foo.Check();
-//		assert(Bar == "" && Foo == "");
-//
-//	}
-//
-//	//move const
-//	{
-//		List<char> Foo("Foo");
-//		const List<char> FooC("Foo");
-//		List<char> Bar("Bar");
-//		const List<char> BarC("Bar");
-//		Bar = BarC;
-//		Bar = std::move(FooC);
-//		Bar.Check(); FooC.Check();
-//		assert(Bar == "Foo" && FooC == "Foo");
-//	}
-//
-//	// front, back;
-//	{
-//		Cont a("Hej");
-//		assert(a.front() == 'H' && a.back() == 'j');
-//		a.front() = 'x'; assert(a == "xej");
-//	}
-//
-//	// insert erase
-//	{
-//		Cont a("abcde");
-//		auto it = ++++a.begin(); //c
-//		it = a.insert(it, 'X');
-//		a.Check();
-//		assert(*it == 'X' && a == "abXcde");
-//		a.Check();
-//		it = ----a.end(); //d
-//		it = a.erase(it);
-//		a.Check();
-//		assert(*it == 'e'&& a == "abXce");
-//
-//	}
-//	//-	push och pop
-//	{
-//		Cont a{};
-//		char c = 'b';
-//		a.push_front(c);    //To use & version
-//		assert(a == "b");
-//		a.push_back('c');   //WIll use && version
-//		assert(a == "bc");
-//		a.push_front('a');
-//		assert(a == "abc");
-//		a.pop_front();
-//		assert(a == "bc");
-//		a.pop_back();
-//		assert(a == "b");
-//		a.push_back('x');
-//		assert(a == "bx");
-//	}
-//
-//	//size och empty
-//	{
-//		List<char> Bar("Bar");
-//		const List<char> BarC("Bar");
-//		Cont a{};
-//		a.Check();
-//
-//		//-	size();
-//		assert(3 == BarC.size() && 0 == a.size());
-//		//-	empty();
-//		assert(!BarC.empty() && a.empty());
-//
-//	}
-//
-//	//Check const of some functions!
-//	{
-//		List<char> Foo("Foo");
-//		const List<char> FooC("Foo");
-//		List<char> Bar("Bar");
-//		const List<char> BarC("Bar");
-//		BarC.front();
-//		assert(!IsConstOrConstRefFun(Bar.front()));
-//		assert(IsConstOrConstRefFun(BarC.front()));
-//		assert(!IsConstOrConstRefFun(Bar.back()));
-//		assert(IsConstOrConstRefFun(BarC.back()));
-//	}
-//
-//	{
-//		List<char> Foo("Foo");
-//		List<char> Bar("Bar");
-//		swap(Foo, Bar);
-//		Foo.Check();
-//		Bar.Check();
-//		assert(Foo == "Bar" && Bar == "Foo");
-//		swap(Foo, Bar);
-//		assert(Foo == "Foo" && Bar == "Bar");
-//		Bar = "";
-//		assert(Foo == "Foo" && Bar == "");
-//		swap(Foo, Bar);
-//		Foo.Check();
-//		Bar.Check();
-//		assert(Foo == "" && Bar == "Foo");
-//		Bar = "";
-//		swap(Foo, Bar);
-//		assert(Foo == "" && Bar == "");
-//	}
 //	TestIterRel();
 //
 }

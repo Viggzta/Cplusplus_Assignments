@@ -18,7 +18,7 @@ class List
 		friend class List<T>;
 		Link* _next, *_prev;
 		Node<T>* Next() { return static_cast<Node<T>*>(_next); }
-		Node<T>* Prev() { return static_cast<Node<T>*>(_next); }
+		Node<T>* Prev() { return static_cast<Node<T>*>(_prev); }
 
 		void insert(const T& value)
 		{
@@ -32,14 +32,15 @@ class List
 
 		void erase()
 		{
-			Link<T> temp = _prev;
+			Link<T>* temp = _prev;
 			_prev->_next = _next;
 			_next->_prev = temp;
 		}
+	public:
 
-		Node<T> asNode()
+		Node<T>* asNode()
 		{
-			return static_cast<Node<T>>(this);
+			return static_cast<Node<T>*>(this);
 		}
 	};
 
@@ -51,6 +52,8 @@ class List
 
 	public:
 		Node(const T& data) :_data(data) {};
+
+		T data() const { return _data; }
 	};
 
 	template <class T>
@@ -173,6 +176,7 @@ public:
 				std::cout << "Delete on " << temp->_prev << std::endl;
 				delete temp->Prev();
 			}
+			_size = 0;
 		}
 		std::cout << "Ran destructor." << std::endl;
 	}
@@ -197,9 +201,29 @@ public:
 
 	List(List&& other)
 	{
-		_head = other._head;
-		_size = other._size;
+		if (other._size == 0)
+		{
+			// Det finns inget att flytta
+			_head._next = &_head;
+			_head._prev = &_head;
+			_size = 0;
+		}
+		else
+		{
+			// Länkar till nytt huvud
+			_head._next = other._head._next;
+			_head._prev = other._head._prev;
+			_size = other._size;
 
+			// Länka prev och next till rätt huvud
+			_head._next->_prev = &_head;
+			_head._prev->_next = &_head;
+
+			// Länkar om other
+			other._head._next = &other._head;
+			other._head._prev = &other._head;
+			other._size = 0;
+		}
 		std::cout << "Ran move ctor." << std::endl;
 	}
 
@@ -235,11 +259,11 @@ public:
 		Link<T>* temp2 = other._head._next;
 		while (temp2 != &other._head)
 		{
-			std::cout << "Adding stuff at " << temp2 << std::endl;
+			std::cout << "Adding: " << temp2->asNode()->_data << " at " << temp2 << std::endl;
 			this->push_back(static_cast<Node<T>*>(temp2)->_data);
 			temp2 = temp2->_next;
 		}
-		std::cout << "Ran assign ctor." << std::endl;
+		std::cout << "Ran copy assign ctor." << std::endl;
 		return *this;
 	}
 
@@ -252,12 +276,35 @@ public:
 			while (temp != &_head)
 			{
 				temp = temp->_next;
-				delete temp->_prev;
+				delete temp->Prev();
 			}
+			_size = 0;
 		}
 
-		_head = other._head;
-		_size = other._size;
+		if (other._size == 0)
+		{
+			// Det finns inget att flytta
+			_head._next = &_head;
+			_head._prev = &_head;
+			_size = 0;
+		}
+		else
+		{
+			// Länkar till nytt huvud
+			_head._next = other._head._next;
+			_head._prev = other._head._prev;
+			_size = other._size;
+
+			// Länka prev och next till rätt huvud
+			_head._next->_prev = &_head;
+			_head._prev->_next = &_head;
+
+			// Länkar om other
+			other._head._next = &other._head;
+			other._head._prev = &other._head;
+			other._size = 0;
+		}
+
 		std::cout << "Ran move assign ctor." << std::endl;
 		return *this;
 	}
@@ -279,7 +326,7 @@ public:
 
 	const T& back() const
 	{
-		return head.Prev()->_data;
+		return _head.Prev()->_data;
 	}
 
 	iterator begin() const
@@ -317,7 +364,7 @@ public:
 	{
 		pos._linkPtr->erase();
 		--_size;
-		return *this;
+		return pos;
 	}
 
 	void push_back(const T& value)
@@ -340,6 +387,17 @@ public:
 		erase(begin()._linkPtr);
 	}
 
+	void printContent()
+	{
+		std::cout << "Running print content!" << std::endl;
+		Link<T>* temp = _head._next;
+		while (temp != &_head)
+		{
+			std::cout << "Out: " << static_cast<Node<T>*>(temp)->_data << std::endl;
+			temp = temp->_next;
+		}
+	}
+
 	friend bool operator==(const List& lhs, const List& other)
 	{
 		if (lhs.size() != other.size())
@@ -356,7 +414,7 @@ public:
 		auto a = lhs.begin(), b = other.begin();
 		while (a != lhs.end())
 		{
-			equal = (a._linkPtr == b._linkPtr);
+			equal = (a._linkPtr->asNode()->data() == b._linkPtr->asNode()->data());
 			if (!equal)
 			{
 				return false;
@@ -395,9 +453,11 @@ public:
 	{
 		if (_size == 0)
 		{
+			std::cout << "Size was 0" << std::endl;
 			return this->empty();
 		}
 
+		std::cout << "Size was NOT 0" << std::endl;
 		return !(this->empty());
 	}
 
