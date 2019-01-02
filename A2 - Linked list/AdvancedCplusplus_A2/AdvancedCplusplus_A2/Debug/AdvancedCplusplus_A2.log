@@ -1,18 +1,2 @@
-﻿  ListTest.cpp
-b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(329): error C2662: 'List<char>::Node<T> *List<T>::Link<T>::Prev(void)': cannot convert 'this' pointer from 'const List<char>::Link<T>' to 'List<char>::Link<T> &'
-          with
-          [
-              T=char
-          ]
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(329): note: Conversion loses qualifiers
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(328): note: while compiling class template member function 'const char &List<char>::back(void) const'
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\listtest.cpp(189): note: see reference to function template instantiation 'const char &List<char>::back(void) const' being compiled
-  b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\testhjälp.h(4): note: see reference to class template instantiation 'List<char>' being compiled
-b:\mapp\game-projects\cplusplus_assignments\a2 - linked list\advancedcplusplus_a2\advancedcplusplus_a2\list.hpp(329): error C2227: left of '->_data' must point to class/struct/union/generic type
-  Generating Code...
-  Compiling...
-  ListIterTest.cpp
-  Generating Code...
-  Compiling...
-  Main.cpp
-  Generating Code...
+﻿  Main.cpp
+  AdvancedCplusplus_A2.vcxproj -> B:\MAPP\Game-Projects\Cplusplus_Assignments\A2 - Linked list\AdvancedCplusplus_A2\Debug\AdvancedCplusplus_A2.exe

@@ -6,6 +6,8 @@
 #include <vector>
 #include <iostream>
 
+#define MY_DEBUG
+
 template<class T>
 class List
 {
@@ -20,7 +22,7 @@ class List
 		Node<T>* Next() { return static_cast<Node<T>*>(_next); }
 		Node<T>* Prev() { return static_cast<Node<T>*>(_prev); }
 
-		void insert(const T& value)
+		Link<T>* insert(const T& value)
 		{
 			// Prev / Next kopplas rätt (dubbelkollat)
 			Node<T>* newNode = new Node<T>(value);
@@ -28,13 +30,18 @@ class List
 			newNode->_prev = _prev;
 			_prev->_next = newNode;
 			this->_prev = newNode;
+
+			return newNode;
 		}
 
-		void erase()
+		Link<T>* erase()
 		{
-			Link<T>* temp = _prev;
+			Link<T>* temp = _next;
 			_prev->_next = _next;
-			_next->_prev = temp;
+			_next->_prev = _prev;
+
+			delete this;
+			return temp;
 		}
 	public:
 
@@ -158,7 +165,6 @@ public:
 		_head._next = &_head;
 		_head._prev = &_head;
 		_size = 0;
-		std::cout << "Ran default ctor." << std::endl;
 	}
 
 	~List()
@@ -167,18 +173,13 @@ public:
 		{
 			Link<T>* temp = _head._next;
 			// Loops through all elements and deletes them
-			std::cout << "Head on " << &_head << std::endl;
 			while (temp != &_head)
 			{
-				std::cout << "temp on " << temp << std::endl;
 				temp = temp->_next;
-				std::cout << "temp move " << temp << std::endl;
-				std::cout << "Delete on " << temp->_prev << std::endl;
 				delete temp->Prev();
 			}
 			_size = 0;
 		}
-		std::cout << "Ran destructor." << std::endl;
 	}
 
 	List(const List& other)
@@ -195,8 +196,6 @@ public:
 			push_back(static_cast<Node<T>*>(temp)->_data);
 			temp = temp->_next;
 		}
-
-		std::cout << "Ran copy ctor." << std::endl;
 	}
 
 	List(List&& other)
@@ -224,7 +223,6 @@ public:
 			other._head._prev = &other._head;
 			other._size = 0;
 		}
-		std::cout << "Ran move ctor." << std::endl;
 	}
 
 	List(const char* other)
@@ -236,12 +234,9 @@ public:
 		int offset = 0;
 		while (other[offset] != '\0')
 		{
-			std::cout << "Pushing! " << other[offset] << std::endl;
 			push_back(other[offset]);
 			++offset;
 		}
-
-		std::cout << "Ran cstring ctor." << std::endl;
 	}
 
 	List& operator=(const List& other)
@@ -259,11 +254,9 @@ public:
 		Link<T>* temp2 = other._head._next;
 		while (temp2 != &other._head)
 		{
-			std::cout << "Adding: " << temp2->asNode()->_data << " at " << temp2 << std::endl;
 			this->push_back(static_cast<Node<T>*>(temp2)->_data);
 			temp2 = temp2->_next;
 		}
-		std::cout << "Ran copy assign ctor." << std::endl;
 		return *this;
 	}
 
@@ -305,7 +298,6 @@ public:
 			other._size = 0;
 		}
 
-		std::cout << "Ran move assign ctor." << std::endl;
 		return *this;
 	}
 
@@ -321,12 +313,14 @@ public:
 
 	const T& front() const
 	{
-		return _head.Next()->_data;
+		return *begin();
 	}
 
 	const T& back() const
 	{
-		return _head.Prev()->_data;
+		auto temp = end();
+		--temp;
+		return *temp;
 	}
 
 	iterator begin() const
@@ -334,7 +328,7 @@ public:
 		return ListIter<T>(_head._next);
 	}
 
-	ListIter<T> end() const// Tog bort const pga bugg
+	ListIter<T> end() const
 	{
 		return ListIter<T>( const_cast<Link<T>*>(&_head) ); // Varför går detta att const_cast:a?
 	}
@@ -355,16 +349,16 @@ public:
 
 	iterator insert(const iterator& pos, const T& value)
 	{
-		pos._linkPtr->insert(value);
+		Link<T>* temp = pos._linkPtr->insert(value);
 		++_size;
-		return pos;
+		return iterator(temp);
 	}
 
 	iterator erase(const iterator& pos)
 	{
-		pos._linkPtr->erase();
+		Link<T>* temp = pos._linkPtr->erase();
 		--_size;
-		return pos;
+		return iterator(temp);
 	}
 
 	void push_back(const T& value)
@@ -385,17 +379,6 @@ public:
 	void pop_front()
 	{
 		erase(begin()._linkPtr);
-	}
-
-	void printContent()
-	{
-		std::cout << "Running print content!" << std::endl;
-		Link<T>* temp = _head._next;
-		while (temp != &_head)
-		{
-			std::cout << "Out: " << static_cast<Node<T>*>(temp)->_data << std::endl;
-			temp = temp->_next;
-		}
 	}
 
 	friend bool operator==(const List& lhs, const List& other)
@@ -419,11 +402,9 @@ public:
 			{
 				return false;
 			}
-
 			++a;
 			++b;
 		}
-
 		return true;
 	}
 
@@ -432,13 +413,65 @@ public:
 		return !(lhs == other);
 	}
 
+	friend bool operator<(const List& lhs, const List& other)
+	{
+		auto a = lhs.begin(), b = other.begin();
+		while (a != lhs.end())
+		{
+			if (a._linkPtr->asNode()->data() != b._linkPtr->asNode()->data())
+			{
+				return a._linkPtr->asNode()->data() < b._linkPtr->asNode()->data();
+			}
+			++a;
+			++b;
+		}
+
+		if (lhs.size() < other.size())
+		{
+			return true;
+		}
+
+		return false; // Allt är lika
+	}
+
+	friend bool operator>(const List& lhs, const List& other)
+	{
+		auto a = lhs.begin(), b = other.begin();
+		while (a != lhs.end())
+		{
+			if (a._linkPtr->asNode()->data() != b._linkPtr->asNode()->data())
+			{
+				return a._linkPtr->asNode()->data() > b._linkPtr->asNode()->data();
+			}
+			++a;
+			++b;
+		}
+
+		if (lhs.size() > other.size())
+		{
+			return true;
+		}
+
+		return false; // Allt är lika
+	}
+
+	friend bool operator<=(const List& lhs, const List& other)
+	{
+		return !(lhs > other);
+	}
+
+	friend bool operator>=(const List& lhs, const List& other)
+	{
+		return !(lhs < other);
+	}
+
 	friend std::ostream& operator<<(std::ostream& cout, const List& other)
 	{
-		Node<T> temp = _head._next;
-		while (temp != _head)
+		auto temp = other.begin();
+		while (temp != other.end())
 		{
-			cout << temp._data;
-			temp = temp._next;
+			cout << temp._linkPtr->asNode()->data();
+			++temp;
 		}
 
 		return cout;
@@ -453,18 +486,68 @@ public:
 	{
 		if (_size == 0)
 		{
-			std::cout << "Size was 0" << std::endl;
 			return this->empty();
 		}
-
-		std::cout << "Size was NOT 0" << std::endl;
 		return !(this->empty());
 	}
 
-	void swap(List<T>& lhs, List<T>& rhs)
+	void swap(List<T>& other)
 	{
-		Link<T> temp = lhs._head;
-		lhs._head = rhs._head;
-		rhs._head = temp;
+		if (other._size == 0 && _size == 0) // Båda är tomma. Gör inget.
+		{
+			return;
+		}
+		if (other._size == 0) // Det finns inget att flytta i OTHER
+		{
+			other._head._next = _head._next;
+			other._head._prev = _head._prev;
+			other._size = _size;
+			other._head._next->_prev = &other._head;
+			other._head._prev->_next = &other._head;
+
+			_head._next = &_head;
+			_head._prev = &_head;
+			_size = 0;
+		}
+		else if (_size == 0) // Det finns inget att flytta i THIS
+		{
+			_head._next = other._head._next;
+			_head._prev = other._head._prev;
+			_size = other._size;
+			_head._next->_prev = &_head;
+			_head._prev->_next = &_head;
+
+			other._head._next = &other._head;
+			other._head._prev = &other._head;
+			other._size = 0;
+		}
+		else
+		{
+			Link<T>* tempThisNxt = _head._next;
+			Link<T>* tempThisPrv = _head._prev;
+			size_t tempThisSize = _size;
+
+			// Länkar till nytt huvud
+			_head._next = other._head._next;
+			_head._prev = other._head._prev;
+			_size = other._size;
+
+			// Länkar till nytt huvud
+			other._head._next = tempThisNxt;
+			other._head._prev = tempThisPrv;
+			other._size = tempThisSize;
+
+			// Länka prev och next till rätt huvud för båda
+			_head._next->_prev = &_head;
+			_head._prev->_next = &_head;
+			other._head._next->_prev = &other._head;
+			other._head._prev->_next = &other._head;
+		}
 	}
 };
+
+template <class T>
+void swap(List<T>& lhs, List<T>& rhs)
+{
+	lhs.swap(rhs);
+}

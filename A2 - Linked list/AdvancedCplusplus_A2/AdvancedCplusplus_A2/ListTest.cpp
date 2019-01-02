@@ -14,7 +14,7 @@
 
 using std::cout;
 
-//void TestIterRel(); //Längst ner
+void TestIterRel(); //Längst ner
 
 void TestList() {
 	{
@@ -40,7 +40,6 @@ void TestList() {
 		Cont d{ std::move(c) };
 		a = b;
 		c = "hej";
-		/*std::cout << "test" << std::endl;*/
 		b = std::move(c);
 		c.Check();
 		d.Check();
@@ -67,7 +66,6 @@ void TestList() {
 		m.Check(); a.Check();
 		assert(m == "aej" && a == "");
 		//Move empty!
-		a.printContent();
 		Cont mm(std::move(a));
 		mm.Check(); a.Check();
 		assert(mm == "" && a == "");
@@ -129,21 +127,19 @@ void TestList() {
 		a.front() = 'x'; assert(a == "xej");
 	}
 
-	//// insert erase (fel?)
-	//{
-	//	Cont a("abcdXe");
-	//	auto it = ++++a.begin(); //c
-	//	it = a.insert(it, 'X');
-	//	a.Check();
-	//	assert(*it == 'X');
-	//	assert(*it == 'X' && a == "abXcde");
-	//	a.Check();
-	//	it = ----a.end(); //d
-	//	it = a.erase(it);
-	//	a.Check();
-	//	assert(*it == 'e'&& a == "abXce");
-
-	//}
+	// insert erase
+	{
+		Cont a("abcde");
+		auto it = ++++a.begin(); //c
+		it = a.insert(it, 'X');
+		a.Check();
+		assert(*it == 'X' && a == "abXcde");
+		a.Check();
+		it = ----a.end(); //d
+		it = a.erase(it);
+		a.Check();
+		assert(*it == 'e'&& a == "abXce");
+	}
 	//-	push och pop
 	{
 		Cont a{};
@@ -176,79 +172,79 @@ void TestList() {
 
 	}
 
-	////Check const of some functions!
-	//{
-	//	List<char> Foo("Foo");
-	//	const List<char> FooC("Foo");
-	//	List<char> Bar("Bar");
-	//	const List<char> BarC("Bar");
-	//	BarC.front();
-	//	assert(!IsConstOrConstRefFun(Bar.front()));
-	//	assert(IsConstOrConstRefFun(BarC.front()));
-	//	assert(!IsConstOrConstRefFun(Bar.back()));
-	//	assert(IsConstOrConstRefFun(BarC.back()));
-	//}
+	//Check const of some functions!
+	{
+		List<char> Foo("Foo");
+		const List<char> FooC("Foo");
+		List<char> Bar("Bar");
+		const List<char> BarC("Bar");
+		BarC.front();
+		assert(!IsConstOrConstRefFun(Bar.front()));
+		assert(IsConstOrConstRefFun(BarC.front()));
+		assert(!IsConstOrConstRefFun(Bar.back()));
+		assert(IsConstOrConstRefFun(BarC.back()));
+	}
 
-	//{
-	//	List<char> Foo("Foo");
-	//	List<char> Bar("Bar");
-	//	swap(Foo, Bar);
-	//	Foo.Check();
-	//	Bar.Check();
-	//	assert(Foo == "Bar" && Bar == "Foo");
-	//	swap(Foo, Bar);
-	//	assert(Foo == "Foo" && Bar == "Bar");
-	//	Bar = "";
-	//	assert(Foo == "Foo" && Bar == "");
-	//	swap(Foo, Bar);
-	//	Foo.Check();
-	//	Bar.Check();
-	//	assert(Foo == "" && Bar == "Foo");
-	//	Bar = "";
-	//	swap(Foo, Bar);
-	//	assert(Foo == "" && Bar == "");
-	//}
-//	TestIterRel();
-//
+	{
+		List<char> Foo("Foo");
+		List<char> Bar("Bar");
+		swap(Foo, Bar);
+		Foo.Check();
+		Bar.Check();
+		assert(Foo == "Bar" && Bar == "Foo");
+		swap(Foo, Bar);
+		assert(Foo == "Foo" && Bar == "Bar");
+		Bar = "";
+		assert(Foo == "Foo" && Bar == "");
+		swap(Foo, Bar);
+		Foo.Check();
+		Bar.Check();
+		assert(Foo == "" && Bar == "Foo");
+		Bar = "";
+		swap(Foo, Bar);
+		assert(Foo == "" && Bar == "");
+	}
+	TestIterRel();
+
 }
-//
-//
-//template<class C>
-//void TestRel(const C& lhs, const C& rhs,
-//	bool(*trueFun)(const C& lhs, const C& rhs),
-//	bool(*falseFun)(const C& lhs, const C& rhs)) {
-//	assert(trueFun(lhs, vhs));
-//	assert(falseFun(lhs, vhs));
-//}
-//
-//void TestIterRel() {
-//#define RelTest(a, b, c, d)  a c b && !(a d b)
-//
-//	List<char> vecAbcdef("Abcdef");
-//	List<char> vecBbcdef("Bbcdef");
-//	List<char> vecAbcdeF("AbcdeF");
-//	List<char> vecAbcdefg("Abcdefg");
-//
-//	{ bool f = RelTest(vecAbcdef, vecAbcdef, == , != ); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecAbcdeF, != , == ); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecBbcdef, != , == ); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecAbcdefg, != , == ); assert(f); }
-//	{ bool f = RelTest(vecAbcdefg, vecAbcdef, != , == ); assert(f); }
-//
-//	bool f1 = vecAbcdeF < vecBbcdef;
-//	bool f2 = vecAbcdef < vecAbcdeF;
-//	bool f3 = vecAbcdef < vecAbcdef;
-//	{ bool f = RelTest(vecAbcdef, vecAbcdef, == , <); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecAbcdeF, >, <); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecBbcdef, <, >); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecAbcdefg, <, >); assert(f); }
-//
-//	{ bool f = RelTest(vecAbcdef, vecAbcdef, <= , != ); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecAbcdeF, >= , <= ); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecBbcdef, <= , >= ); assert(f); }
-//	{ bool f = RelTest(vecAbcdef, vecAbcdefg, <= , >= ); assert(f); }
-//
-//	//swap(vecAbcdef, vecAbcdefg);
-//	//assert(vecAbcdef == "Abcdefg");
-//	//assert(vecAbcdefg == "Abcdef");
-//}
+
+
+template<class C>
+void TestRel(const C& lhs, const C& rhs,
+	bool(*trueFun)(const C& lhs, const C& rhs),
+	bool(*falseFun)(const C& lhs, const C& rhs)) {
+	assert(trueFun(lhs, vhs));
+	assert(falseFun(lhs, vhs));
+}
+
+void TestIterRel() {
+#define RelTest(a, b, c, d)  a c b && !(a d b)
+
+	List<char> vecAbcdef("Abcdef");
+	List<char> vecBbcdef("Bbcdef");
+	List<char> vecAbcdeF("AbcdeF");
+	List<char> vecAbcdefg("Abcdefg");
+
+	{ bool f = RelTest(vecAbcdef, vecAbcdef, == , != ); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecAbcdeF, != , == ); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecBbcdef, != , == ); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecAbcdefg, != , == ); assert(f); }
+	{ bool f = RelTest(vecAbcdefg, vecAbcdef, != , == ); assert(f); }
+
+	bool f1 = vecAbcdeF < vecBbcdef;
+	bool f2 = vecAbcdef < vecAbcdeF;
+	bool f3 = vecAbcdef < vecAbcdef;
+	{ bool f = RelTest(vecAbcdef, vecAbcdef, == , <); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecAbcdeF, >, <); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecBbcdef, <, >); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecAbcdefg, <, >); assert(f); }
+
+	{ bool f = RelTest(vecAbcdef, vecAbcdef, <= , != ); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecAbcdeF, >= , <= ); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecBbcdef, <= , >= ); assert(f); }
+	{ bool f = RelTest(vecAbcdef, vecAbcdefg, <= , >= ); assert(f); }
+
+	//swap(vecAbcdef, vecAbcdefg);
+	//assert(vecAbcdef == "Abcdefg");
+	//assert(vecAbcdefg == "Abcdef");
+}
