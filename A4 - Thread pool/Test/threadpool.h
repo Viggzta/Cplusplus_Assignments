@@ -29,11 +29,14 @@ private:
 			std::function<void()> func;
 			while (_ownerThreadpool->_running)
 			{
-				// Behövs det mutex?
 				std::unique_lock<std::mutex> lock(_ownerThreadpool->_mutex);
 				if (_ownerThreadpool->_queue.empty())
 				{
 					_ownerThreadpool->_conditionLock.wait(lock);
+					if (!_ownerThreadpool->_running)
+					{
+						break; // Should now be able to join with the rest of the program
+					}
 				}
 				func = _ownerThreadpool->_queue.front();
 				_ownerThreadpool->_queue.pop();
@@ -59,6 +62,15 @@ public:
 		}
 	}
 
+	~ThreadPool()
+	{
+		_running = false;
+		for (size_t i = 0; i < _threads.size(); i++)
+		{
+			_threads[i].join();
+		}
+	}
+
 	ThreadPool(const ThreadPool &) = delete;
 	ThreadPool(ThreadPool &&) = delete;
 
@@ -66,11 +78,16 @@ public:
 	ThreadPool & operator=(ThreadPool &&) = delete;
 
 	template <class F, class ... Args>
-	auto enqueue(F f, Args ... args)
+	auto enqueue(F& f, Args&& ... args) -> std::future<decltype(f(args...))>
 	{
-		std::function<F(args...)> func = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
-		auto task = std::make_shared<std::packaged_task<F()>>(func);
-		// Add task to queue
+		std::function<decltype(f(args...))()> func = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
+		auto task = std::make_shared<std::packaged_task<decltype(f(args...))()>>(func);
+		std::function<void()> out_function = [task]() { 
+			(*task)();
+		};
+		_queue.push(out_function);
+		_conditionLock.notify_one();
+		return task->get_future();
 	}
 };
 

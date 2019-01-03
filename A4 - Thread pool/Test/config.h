@@ -11,8 +11,8 @@
 /*
  Source and destination PNG paths
  */
-#define SRCFILE ("...")
-#define DESTFILE ("...")
+#define SRCFILE ("olle.png")
+#define DESTFILE ("olle_m.png")
 
 /*
  Threading strategy
