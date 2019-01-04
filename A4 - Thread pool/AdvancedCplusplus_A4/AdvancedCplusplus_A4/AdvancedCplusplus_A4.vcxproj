@@ -116,13 +116,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\config.h" />
-    <ClInclude Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\lodepng.h" />
-    <ClInclude Include="..\..\Test\threadpool.h" />
+    <ClCompile Include="lodepng.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\lodepng.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\MAPP\Game-Projects\Cplusplus_Assignments\A4 - Thread pool\Test\main.cpp" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="lodepng.h" />
+    <ClInclude Include="MutexQueue.h" />
+    <ClInclude Include="threadpool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
