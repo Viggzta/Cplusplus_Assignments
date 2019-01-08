@@ -1,11 +1,11 @@
 
-//#include "VectorTestHelp.h"
+#include "VectorTestHelp.h"
 
 #include <iostream>
 using std::cout;
 
-//void TestVector();
-//void TestIter();
+void TestVector();
+void TestIter();
 
 int main() {
 #ifdef DBG_NEW
@@ -17,7 +17,7 @@ int main() {
 		"Control G and VG by changing in VectorTestHelp.h\n"
 		"Change the includes of Vector.hpp and VectIter.hhp to your files\n\n"
 		;
-	//TestVector();
+	TestVector();
 	//TestIter();
 	//TestIterInAlg(); // Utkommenterad by default
 

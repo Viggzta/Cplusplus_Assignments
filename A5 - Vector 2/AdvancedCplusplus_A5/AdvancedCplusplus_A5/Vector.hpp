@@ -3,6 +3,7 @@
 #include <iterator>
 #include <stdexcept>
 #include <vector>
+#include <cassert>
 
 #include "VectIter.hpp"
 
@@ -12,7 +13,6 @@ class Vector
 private:
 	std::allocator<T> _alloc = std::allocator<T>();
 	T* _pointer;
-	/*const T* const_pointer;*/
 	size_t _size;
 	size_t _capacity;
 
@@ -31,42 +31,49 @@ public:
 
 	//typedef  iterator_category;
 
-	// O(1)
+	// O(1) Done
 	Vector()
 	{
 		_size = 0;
 		_capacity = 4;
 		_pointer = _alloc.allocate(_capacity);
+		std::cout << "Ran default ctor." << std::endl;
 	}
 
-	// O(N)
+	// O(N) Done
 	~Vector()
 	{
-		for (size_t i = _size; i >= 0 ; --i)
+		if (_capacity != 0)
 		{
-			_alloc.destroy(_alloc[i]);
+			for (size_t i = 0; i < _size; ++i)
+			{
+				_alloc.destroy(_pointer + i);
+			}
+			_alloc.deallocate(_pointer, _capacity);
+			_size = 0;
+			_capacity = 0;
 		}
-		_alloc.deallocate(_pointer, _capacity);
-		_size = 0;
-		_capacity = 0;
+		std::cout << "Ran destructor." << std::endl;
 	}
 
-	// O(n)
+	// O(n) Done
 	Vector(const Vector& other)
 	{
 		this->~Vector();
 
 		_capacity = other._capacity;
 		_size = other._size;
-		_pointer = new T[_capacity];
+		_pointer = _alloc.allocate(_capacity);
 
 		for (size_t i = 0; i < _size; ++i)
 		{
-			_pointer[i] = other._pointer[i];
+			_alloc.construct(_pointer + i, other._pointer[i]);
 		}
+
+		std::cout << "Ran copy ctor." << std::endl;
 	}
 
-	// O(1)
+	// O(1) Done
 	Vector(Vector&& other) noexcept
 	{
 		this->~Vector();
@@ -78,31 +85,35 @@ public:
 		other._capacity = 0;
 		other._size = 0;
 		other._pointer = nullptr;
+		std::cout << "Ran move ctor." << std::endl;
 	}
 
-	// O(n)
+	// O(n) TODO
 	template<class Titer>
 	Vector(size_t newCapacity, const Titer& begin, const Titer& end)
 	{
+		std::cout << "ERROR: Ran loop ctor." << std::endl;
 	}
 
-	// O(n)
+	// O(n) Done
 	Vector(const char* other)
 	{
 		_size = 0;
 		_capacity = 4;
-		_pointer = new T[_capacity];
+		_pointer = _alloc.allocate(_capacity);
 
 		int offset = 0;
 		while (other[offset] != '\0')
 		{
-			//std::cout << "Pushing! " << other[offset] << std::endl;
+			std::cout << "Pushing! " << other[offset] << std::endl;
 			push_back(other[offset]);
 			++offset;
 		}
+
+		std::cout << "Ran char ctor." << std::endl;
 	}
 
-	// O(n)
+	// O(n) Done
 	Vector& operator=(const Vector& other)
 	{
 		if (*this == other)
@@ -114,19 +125,20 @@ public:
 		{
 			this->~Vector();
 			_capacity = other._capacity;
-			_pointer = new T[_capacity];
+			_pointer = _alloc.allocate(_capacity);;
 		}
 		_size = other._size;
 
 		for (size_t i = 0; i < _size; ++i)
 		{
-			_pointer[i] = other._pointer[i];
+			_alloc.construct(_pointer + i, other._pointer[i]);
 		}
 
+		std::cout << "Ran copy operator." << std::endl;
 		return *this;
 	}
 
-	// O(n)
+	// O(n) Done
 	Vector& operator=(Vector&& other) noexcept
 	{
 		this->~Vector();
@@ -139,16 +151,23 @@ public:
 		other._size = 0;
 		other._pointer = nullptr;
 
+		std::cout << "Ran move operator." << std::endl;
 		return *this;
 	}
 
-	// O(1)
+	// O(1) Done
 	T& operator[](size_t i)
 	{
 		return _pointer[i];
 	}
 
-	// O(1)
+	// O(1) Done
+	const T& operator[](size_t i) const
+	{
+		return _pointer[i];
+	}
+
+	// O(1) Done
 	T& at(size_t i)
 	{
 		if (i >= _size)
@@ -161,13 +180,7 @@ public:
 		}
 	}
 
-	// O(1)
-	const T& operator[](size_t i) const
-	{
-		return _pointer[i];
-	}
-
-	// O(1)
+	// O(1) Done
 	const T& at(size_t i) const
 	{
 		if (i >= _size)
@@ -180,19 +193,19 @@ public:
 		}
 	}
 
-	// O(1)
+	// O(1) Done
 	T* data() noexcept
 	{
 		return _pointer;
 	}
 
-	// O(1)
+	// O(1) Done
 	const T* data() const noexcept
 	{
 		return _pointer;
 	}
 
-	// O(1)
+	// O(1) Done
 	size_t size() const noexcept
 	{
 		return _size;
@@ -201,14 +214,15 @@ public:
 	// O(n)
 	void reserve(size_t n)
 	{
+		std::cout << "Reserve not yet implemented" << std::endl;
 		if (_capacity < n)
 		{
-			if (_pointer != nullptr)
+			/*if (_pointer != nullptr)
 			{
-				T* newData = new T[n];
+				T* newData = _alloc.allocate(n);
 				for (size_t i = 0; i < _size; ++i)
 				{
-					newData[i] = _pointer[i];
+					_alloc.construct(newData + i, _pointer[i]);
 				}
 
 				delete[] _pointer;
@@ -219,7 +233,8 @@ public:
 			{
 				_pointer = new T[n];
 				_size = 0;
-			}
+			}*/
+			_alloc.allocate(n - _capacity);
 			_capacity = n;
 		}
 	}
@@ -251,7 +266,8 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		_pointer[_size++] = c;
+		_alloc.construct(_pointer + _size, c);
+		++_size;
 	}
 
 	// O(1) ammorterat och O(n) vid omallokering
@@ -262,7 +278,8 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		_pointer[_size++] = c;
+		_alloc.construct(_pointer + _size, c);
+		++_size;
 	}
 
 	// Inte med i uppgiften
@@ -283,51 +300,74 @@ public:
 	}
 
 	// O(1)
-	iterator begin() const
+	iterator begin() noexcept
 	{
 		return iterator(_pointer);
 	}
 
-	// O(1)
-	const_iterator begin() const
+	const_iterator begin() const noexcept
 	{
 		return const_iterator(_pointer);
 	}
 
 	// O(1)
-	reverse_iterator rbegin() const
+	const_iterator cbegin() const noexcept
 	{
-		return _pointer;
+		return const_iterator(_pointer);
 	}
 
 	// O(1)
-	const_reverse_iterator rbegin() const
+	reverse_iterator rbegin() noexcept
 	{
-		return _pointer;
+		return reverse_iterator(_pointer);
 	}
 
 	// O(1)
-	iterator end() const
+	const_reverse_iterator rbegin() const noexcept
 	{
-		return (_pointer + _size);
+		return const_reverse_iterator(_pointer);
 	}
 
 	// O(1)
-	const_iterator end() const
+	const_reverse_iterator crbegin() const noexcept
 	{
-		return (_pointer + _size);
+		return const_reverse_iterator(_pointer);
 	}
 
 	// O(1)
-	reverse_iterator& rend() const
+	iterator end() noexcept
 	{
-		return (_pointer + _size);
+		return iterator(_pointer + _size);
 	}
 
 	// O(1)
-	const_reverse_iterator& rend() const
+	const_iterator end() const noexcept
 	{
-		return (_pointer + _size);
+		return const_iterator(_pointer + _size);
+	}
+
+	// O(1)
+	const_iterator cend() const noexcept
+	{
+		return const_iterator(_pointer + _size);
+	}
+
+	// O(1)
+	reverse_iterator rend() noexcept
+	{
+		return reverse_iterator(_pointer + _size);
+	}
+
+	// O(1)
+	const_reverse_iterator rend() const noexcept
+	{
+		return const_reverse_iterator(_pointer + _size);
+	}
+
+	// O(1)
+	const_reverse_iterator crend() const noexcept
+	{
+		return const_reverse_iterator(_pointer + _size);
 	}
 
 	// O(n)
@@ -419,12 +459,12 @@ public:
 
 	void swap(Vector& rhs)
 	{
-		T temp(lhs);
-		lhs = rhs;
-		rhs = temp;
+		Vector<T>* temp = this;
+		*this = rhs;
+		rhs = *temp;
 	}
 
-	bool Invariant()
+	bool Invariant() const
 	{
 		return (_size <= _capacity);
 	}
