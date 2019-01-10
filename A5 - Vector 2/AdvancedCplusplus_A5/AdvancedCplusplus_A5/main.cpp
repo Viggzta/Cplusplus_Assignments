@@ -18,7 +18,7 @@ int main() {
 		"Change the includes of Vector.hpp and VectIter.hhp to your files\n\n"
 		;
 	TestVector();
-	//TestIter();
+	TestIter();
 	//TestIterInAlg(); // Utkommenterad by default
 
 	new int;

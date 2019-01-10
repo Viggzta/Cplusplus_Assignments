@@ -82,11 +82,22 @@ public:
 		std::cout << "Ran move ctor." << std::endl;
 	}
 
-	// O(n) TODO
+	// O(n) Done
 	template<class Titer>
 	Vector(size_t newCapacity, const Titer& begin, const Titer& end)
 	{
-		std::cout << "ERROR: Ran loop ctor." << std::endl;
+		this->~Vector();
+
+		_capacity = newCapacity;
+		_size = 0;
+		_pointer = _alloc.allocate(_capacity);
+
+		for (auto it = begin; it != end; ++it)
+		{
+			push_back(it);
+		}
+
+		std::cout << "Ran copy loop ctor." << std::endl;
 	}
 
 	// O(n) Done
@@ -268,7 +279,7 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		new(_pointer + _size) T(c);
+		new(_pointer + _size) T(std::move(c));
 		++_size;
 	}
 
@@ -309,19 +320,19 @@ public:
 	// O(1)
 	reverse_iterator rbegin() noexcept
 	{
-		return reverse_iterator(_pointer);
+		return reverse_iterator(_pointer + _size);
 	}
 
 	// O(1)
 	const_reverse_iterator rbegin() const noexcept
 	{
-		return const_reverse_iterator(_pointer);
+		return const_reverse_iterator(_pointer + _size);
 	}
 
 	// O(1)
 	const_reverse_iterator crbegin() const noexcept
 	{
-		return const_reverse_iterator(_pointer);
+		return const_reverse_iterator(_pointer + _size);
 	}
 
 	// O(1)
@@ -345,19 +356,19 @@ public:
 	// O(1)
 	reverse_iterator rend() noexcept
 	{
-		return reverse_iterator(_pointer + _size);
+		return reverse_iterator(_pointer);
 	}
 
 	// O(1)
 	const_reverse_iterator rend() const noexcept
 	{
-		return const_reverse_iterator(_pointer + _size);
+		return const_reverse_iterator(_pointer);
 	}
 
 	// O(1)
 	const_reverse_iterator crend() const noexcept
 	{
-		return const_reverse_iterator(_pointer + _size);
+		return const_reverse_iterator(_pointer);
 	}
 
 	// O(n)
@@ -447,13 +458,6 @@ public:
 		return !(lhs < other);
 	}
 
-	void swap(Vector& rhs)
-	{
-		Vector<T>* temp = this;
-		*this = rhs;
-		rhs = *temp;
-	}
-
 	bool Invariant() const
 	{
 		return (_size <= _capacity);
@@ -468,5 +472,7 @@ public:
 template <class T>
 void swap(Vector<T>& lhs, Vector<T>& rhs)
 {
-	lhs.swap(rhs);
+	Vector<T> temp(lhs);
+	lhs = rhs;
+	rhs = temp;
 };
