@@ -1,8 +1,9 @@
 ﻿  main.cpp
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(98): warning C4018: '<': signed/unsigned mismatch
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(99): warning C4018: '<': signed/unsigned mismatch
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(150): warning C4018: '<': signed/unsigned mismatch
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(151): warning C4018: '<': signed/unsigned mismatch
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(227): warning C4018: '<': signed/unsigned mismatch
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(228): warning C4018: '<': signed/unsigned mismatch
-b:\mapp\game-projects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(356): error C4700: uninitialized local variable 'a' used
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(98): warning C4018: '<': signed/unsigned mismatch
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(99): warning C4018: '<': signed/unsigned mismatch
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(208): error C2397: conversion from 'double' to 'const float' requires a narrowing conversion
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(208): warning C4305: 'initializing': truncation from 'double' to 'const float'
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(150): warning C4018: '<': signed/unsigned mismatch
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(151): warning C4018: '<': signed/unsigned mismatch
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(227): warning C4018: '<': signed/unsigned mismatch
+d:\gameprojects\cplusplus_assignments\a4 - thread pool\advancedcplusplus_a4\advancedcplusplus_a4\main.cpp(228): warning C4018: '<': signed/unsigned mismatch

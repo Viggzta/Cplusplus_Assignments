@@ -29,8 +29,6 @@ public:
 	using reverse_iterator = std::reverse_iterator<VectIter<T>>;
 	using const_reverse_iterator = std::reverse_iterator<VectIter<const T>>;
 
-	//typedef  iterator_category;
-
 	// O(1) Done
 	Vector()
 	{
@@ -45,10 +43,6 @@ public:
 	{
 		if (_capacity != 0)
 		{
-			for (size_t i = 0; i < _size; ++i)
-			{
-				_alloc.destroy(_pointer + i);
-			}
 			_alloc.deallocate(_pointer, _capacity);
 			_size = 0;
 			_capacity = 0;
@@ -67,7 +61,7 @@ public:
 
 		for (size_t i = 0; i < _size; ++i)
 		{
-			_alloc.construct(_pointer + i, other._pointer[i]);
+			new(_pointer + i) T(other._pointer[i]);
 		}
 
 		std::cout << "Ran copy ctor." << std::endl;
@@ -131,7 +125,7 @@ public:
 
 		for (size_t i = 0; i < _size; ++i)
 		{
-			_alloc.construct(_pointer + i, other._pointer[i]);
+			new(_pointer + i) T(other._pointer[i]);
 		}
 
 		std::cout << "Ran copy operator." << std::endl;
@@ -211,54 +205,50 @@ public:
 		return _size;
 	}
 
-	// O(n)
+	// O(n) Done
 	void reserve(size_t n)
 	{
-		std::cout << "Reserve not yet implemented" << std::endl;
 		if (_capacity < n)
 		{
-			/*if (_pointer != nullptr)
+			if (_pointer != nullptr)
 			{
 				T* newData = _alloc.allocate(n);
 				for (size_t i = 0; i < _size; ++i)
 				{
-					_alloc.construct(newData + i, _pointer[i]);
+					new(newData + i) T(_pointer[i]);
 				}
-
-				delete[] _pointer;
-
+				_alloc.deallocate(_pointer, _capacity);
 				_pointer = newData;
 			}
 			else
 			{
-				_pointer = new T[n];
+				_pointer = _alloc.allocate(n);
 				_size = 0;
-			}*/
-			_alloc.allocate(n - _capacity);
+			}
 			_capacity = n;
 		}
 	}
 
-	// O(1)
+	// O(1) Done
 	size_t capacity() const noexcept
 	{
 		return _capacity;
 	}
 
-	// O(n)
+	// O(n) Done
 	void shrink_to_fit()
 	{
-		T* out = new T[_size];
+		T* out = _alloc.allocate(_size);
 		for (size_t i = 0; i < _size; ++i)
 		{
-			out[i] = _pointer[i];
+			new(out + i) T(_pointer[i]);
 		}
-		delete[] _pointer;
+		_alloc.deallocate(_pointer, _capacity);
 		_capacity = _size;
 		_pointer = out;
 	}
 
-	// O(1) ammorterat och O(n) vid omallokering
+	// O(1) ammorterat och O(n) vid omallokering Done
 	void push_back(const T& c)
 	{
 		if (_size == _capacity)
@@ -266,11 +256,11 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		_alloc.construct(_pointer + _size, c);
+		new(_pointer + _size) T(c);
 		++_size;
 	}
 
-	// O(1) ammorterat och O(n) vid omallokering
+	// O(1) ammorterat och O(n) vid omallokering Done
 	void push_back(T&& c)
 	{
 		if (_size == _capacity)
@@ -278,11 +268,11 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		_alloc.construct(_pointer + _size, c);
+		new(_pointer + _size) T(c);
 		++_size;
 	}
 
-	// Inte med i uppgiften
+	// Inte med i uppgiften Done
 	void resize(size_t n)
 	{
 		if (n > _capacity)
