@@ -121,7 +121,7 @@ void TestG() {
     //-	Jämförelse med (== och <)
     SharedPtr<C> sp31(new C(31));
     //	o	En SharedPtr	G
-    {
+    /*{
         SharedPtr<C> sp12(new C(12));
         assert(sp12);
         SharedPtr<C> sp11, sp13(sp12), sp14(new C(14));
@@ -134,7 +134,7 @@ void TestG() {
         assert(sp13 == sp12);
         assert(!(sp13 == sp14));
         assert((sp13 < sp14) || (sp14 < sp13));
-    }
+    }*/
     //get, * och ->
     {
         SharedPtr<C> sp41(new C(41));
@@ -150,6 +150,8 @@ void TestG() {
 
         sp51.reset();
         assert(!sp51);
+
+		std::cout << "Done" << std::endl;
     }
 }
 

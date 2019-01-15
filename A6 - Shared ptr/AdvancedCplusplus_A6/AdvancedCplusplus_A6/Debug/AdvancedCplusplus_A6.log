@@ -1,4 +1,2 @@
 ﻿  Main.cpp
-b:\mapp\game-projects\cplusplus_assignments\a6 - shared ptr\advancedcplusplus_a6\advancedcplusplus_a6\sharedptr.hpp(143): error C2676: binary '<': 'C' does not define this operator or a conversion to a type acceptable to the predefined operator
-  b:\mapp\game-projects\cplusplus_assignments\a6 - shared ptr\advancedcplusplus_a6\advancedcplusplus_a6\sharedptr.hpp(140): note: while compiling class template member function 'bool operator <(SharedPtr<C> &,SharedPtr<C> &)'
-  b:\mapp\game-projects\cplusplus_assignments\a6 - shared ptr\advancedcplusplus_a6\advancedcplusplus_a6\main.cpp(73): note: see reference to class template instantiation 'SharedPtr<C>' being compiled
+  AdvancedCplusplus_A6.vcxproj -> B:\MAPP\Game-Projects\Cplusplus_Assignments\A6 - Shared ptr\AdvancedCplusplus_A6\Debug\AdvancedCplusplus_A6.exe
