@@ -91,73 +91,67 @@ void TestG() {
 	//-	Tilldelning från en	
 	//	o	En SharedPtr	G
 	{
-		C* test1 = new C(1);
-		C* test2 = new C(2);
-		std::cout << test1 << " | " << test2 << std::endl;
-
-		SharedPtr<C> ax(test1);
-		SharedPtr<C> by(test2);
+		SharedPtr<C> ax(new C(1)), by(new C(2));
 		TestAssignment(ax, by);
 	}
-	//  {
-	//      SharedPtr<C> sp1(new C(1)), sp2;
-	//      sp1->CheckC(1); sp1.Check(); sp2.Check();
-	//      // null = nått
-	//      sp2 = sp1;
-	//      sp1->CheckC(1); sp1.Check(); sp2->CheckC(1); sp2.Check();
-	//      //self assignment
-	//      sp1 = sp1;
-	//      sp1->CheckC(1); sp1.Check(); sp2->CheckC(1); sp2.Check();
-	//      //same pointer;
-	//      sp1 = sp2;
-	//      sp1->CheckC(1); sp1.Check(); sp2->CheckC(1); sp2.Check();
-	//      SharedPtr<C> sp10(new C(10));
-	//      //nått = nått annat
-	//      sp1 = sp10;
-	//      sp1->CheckC(10); sp1.Check(); sp10->CheckC(10); sp10.Check();
-	//      sp1 = nullptr;
-	//      //nått = null
-	//      sp10 = sp1;
-	//      sp1.Check(); sp10.Check();
-	//      assert(!sp10 && !sp1);
-	//      sp14 = sp12;
-	//      assert(sp14);
-	//  }
-	//  //-	Jämförelse med (== och <)
-	//  SharedPtr<C> sp31(new C(31));
-	//  //	o	En SharedPtr	G
-	//  {
-	//      SharedPtr<C> sp12(new C(12));
-	//      assert(sp12);
-	//      SharedPtr<C> sp11, sp13(sp12), sp14(new C(14));
-	//      assert(!sp11);
-	//      assert(sp13);
+	{
+		SharedPtr<C> sp1(new C(1)), sp2;
+		sp1->CheckC(1); sp1.Check(); sp2.Check();
+		// null = nått
+		sp2 = sp1;
+		sp1->CheckC(1); sp1.Check(); sp2->CheckC(1); sp2.Check();
+		//self assignment
+		sp1 = sp1;
+		sp1->CheckC(1); sp1.Check(); sp2->CheckC(1); sp2.Check();
+		//same pointer;
+		sp1 = sp2;
+		sp1->CheckC(1); sp1.Check(); sp2->CheckC(1); sp2.Check();
+		SharedPtr<C> sp10(new C(10));
+		//nått = nått annat
+		sp1 = sp10;
+		sp1->CheckC(10); sp1.Check(); sp10->CheckC(10); sp10.Check();
+		sp1 = nullptr;
+		//nått = null
+		sp10 = sp1;
+		sp1.Check(); sp10.Check();
+		assert(!sp10 && !sp1);
+		sp14 = sp12;
+		assert(sp14);
+	}
+	//-	Jämförelse med (== och <)
+	SharedPtr<C> sp31(new C(31));
+	//	o	En SharedPtr	G
+	{
+		SharedPtr<C> sp12(new C(12));
+		assert(sp12);
+		SharedPtr<C> sp11, sp13(sp12), sp14(new C(14));
+		assert(!sp11);
+		assert(sp13);
 
-	//      assert(sp11 == nullptr);
-	//      assert(sp11 < sp12);
-	//      assert(!(sp12 < sp11));
-	//      assert(sp13 == sp12);
-	//      assert(!(sp13 == sp14));
-	//      assert((sp13 < sp14) || (sp14 < sp13));
-	//  }
-	//  //get, * och ->
-	//  {
-	//      SharedPtr<C> sp41(new C(41));
-	//      SharedPtr<C> sp42(new C(42));
-	//      assert((sp41->value) == (sp41.get()->value));
-	//      assert((sp41->value) != (sp42.get()->value));
-	//      assert(&(*sp41) == (sp41.get()));
+		assert(sp11 == nullptr);
+		assert(sp11 < sp12);
+		assert(!(sp12 < sp11));
+		assert(sp13 == sp12);
+		assert(!(sp13 == sp14));
+		assert((sp13 < sp14) || (sp14 < sp13));
+	}
+	//get, * och ->
+	{
+		SharedPtr<C> sp41(new C(41));
+		SharedPtr<C> sp42(new C(42));
+		assert((sp41->value) == (sp41.get()->value));
+		assert((sp41->value) != (sp42.get()->value));
+		assert(&(*sp41) == (sp41.get()));
 
-	//      //move
-	//      SharedPtr<C> sp51(std::move(sp41));
-	//      assert(sp51->value == 41);
-	//      assert(!sp41);
+		//move
+		SharedPtr<C> sp51(std::move(sp41));
+		assert(sp51->value == 41);
+		assert(!sp41);
 
-	//      sp51.reset();
-	//      assert(!sp51);
-
-		  //std::cout << "Done" << std::endl;
-	//  }
+		sp51.reset();
+		assert(!sp51);
+	}
+	std::cout << "Done" << std::endl;
 }
 
 

@@ -10,21 +10,35 @@ private:
 	T* _pointer;
 	int* _refCount;
 
+	void addRef(T* ptr)
+	{
+		if (ptr != nullptr)
+		{
+			if (_refCount == nullptr)
+			{
+				_refCount = new int(1);
+			}
+			else
+			{
+				++*_refCount;
+			}
+		}
+	}
+
 	void removeRef()
 	{
 		if (_refCount != nullptr)
 		{
-			if (*_refCount != 0)
-			{
-				--*_refCount;
-			}
+			--*_refCount;
 			if (*_refCount == 0)
 			{
 				std::cout << "Refrence is dead!(" << _refCount << "). " << std::endl;
 				delete _pointer;
 				delete _refCount;
 			}
+			_refCount = nullptr;
 		}
+		_pointer = nullptr;
 	}
 
 	bool isSelf(SharedPtr& other)
@@ -41,19 +55,18 @@ public:
 	SharedPtr()
 	{
 		_pointer = nullptr;
-		_refCount = new int(1);
+		_refCount = nullptr;
 
-		std::cout << "Ran void ctor(" << _refCount << "). " << *_refCount << std::endl;
+		std::cout << "Ran void ctor(" << _refCount << "). " << std::endl;
 	}
 
 	SharedPtr(T* other)
 	{
-		removeRef();
-
 		_pointer = other;
-		_refCount = new int(1);
+		_refCount = nullptr;
+		addRef(other);
 
-		std::cout << "Ran _ptr assign ctor(" << _refCount << "). " << *_refCount << std::endl;
+		std::cout << "Ran _ptr assign ctor(" << _refCount << "). " << std::endl;
 	}
 
 	SharedPtr(SharedPtr& other)
@@ -63,11 +76,9 @@ public:
 			return;
 		}
 
-		removeRef();
-
 		_pointer = other._pointer;
 		_refCount = other._refCount;
-		++*_refCount;
+		addRef(_pointer);
 
 		std::cout << "Ran copy ctor(" << _refCount << "). " << *_refCount << std::endl;
 	}
@@ -81,9 +92,8 @@ public:
 
 		_pointer = other._pointer;
 		_refCount = other._refCount;
-
-		other._pointer = nullptr;
-		other._refCount = new int(1);
+		addRef(_pointer);
+		other.removeRef();
 
 		std::cout << "Ran move ctor(" << _refCount << "). " << *_refCount << std::endl;
 	}
@@ -92,30 +102,13 @@ public:
 	{
 		if (_refCount != nullptr)
 		{
-			std::cout << "Ran destructor(" << _refCount << "). " << *_refCount;
+			std::cout << "Ran destructor(" << _refCount << "). " << *_refCount << std::endl;
 		}
 		else
 		{
-			std::cout << "Ran destructor(nullptr). ";
+			std::cout << "Ran destructor(nullptr). " << std::endl;
 		}
-
-		if (_refCount != nullptr)
-		{
-			if (*_refCount != 0)
-			{
-				--*_refCount;
-			}
-			if (*_refCount == 0)
-			{
-				std::cout << " KILLED";
-				std::cout << "[" << _pointer << "]";
-				std::cout << "[" << _refCount << "]";
-				delete _pointer;
-				delete _refCount;
-			}
-		}
-
-		std::cout << std::endl;
+		removeRef();
 	}
 
 	SharedPtr* operator=(SharedPtr& other)
@@ -126,34 +119,32 @@ public:
 		}
 
 		removeRef();
-
 		_pointer = other._pointer;
 		_refCount = other._refCount;
-		++*_refCount;
+		addRef(_pointer);
 
-		std::cout << "Ran copy assign(" << _refCount << "). " << *_refCount << std::endl;
+		std::cout << "Ran copy assign(" << _refCount << "). " << std::endl;
 		return this;
 	}
 
 	SharedPtr* operator=(std::nullptr_t other)
 	{
-		if (isSelf(other))
+		if (_pointer == nullptr)
 		{
 			return this;
 		}
 
 		removeRef();
-
 		_pointer = nullptr;
-		_refCount = new int(0);
+		_refCount = nullptr;
 
-		std::cout << "Ran nullptr assign(" << _refCount << "). " << *_refCount << std::endl;
+		std::cout << "Ran nullptr assign(" << _refCount << "). " << std::endl;
 		return this;
 	}
 
 	friend bool operator==(SharedPtr& lhs, std::nullptr_t rhs)
 	{
-		return (*lhs == rhs);
+		return !lhs;
 	}
 	friend bool operator<(SharedPtr& lhs, std::nullptr_t rhs)
 	{
@@ -167,7 +158,7 @@ public:
 
 	friend bool operator<(SharedPtr& lhs, SharedPtr& rhs)
 	{
-		return (*lhs < *rhs);
+		return (lhs.get() < rhs.get());
 	}
 
 	T& operator*()
@@ -187,8 +178,7 @@ public:
 
 	void reset()
 	{
-		_pointer = nullptr;
-		_refCount = 0;
+		removeRef();
 	}
 
 	T* get()
@@ -208,7 +198,16 @@ public:
 
 	bool Invariant()
 	{
-		return (*_refCount != -1);
+		if (_refCount == nullptr && _pointer == nullptr)
+		{
+			return true;
+		}
+		else if (_refCount != nullptr && _pointer != nullptr)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 };
 
