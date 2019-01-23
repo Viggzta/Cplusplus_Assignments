@@ -1,6 +1,8 @@
 
 #include "VectorTestHelp.h"
 
+#include <stdlib.h>
+#include <crtdbg.h>
 #include <iostream>
 using std::cout;
 
@@ -8,9 +10,7 @@ void TestVector();
 void TestIter();
 
 int main() {
-#ifdef DBG_NEW
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif
 	std::locale::global(std::locale("swedish"));
 
 	std::cout <<
