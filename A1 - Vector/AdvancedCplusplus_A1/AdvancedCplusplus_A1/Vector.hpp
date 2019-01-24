@@ -11,7 +11,7 @@ class Vector : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t, T*, 
 {
 private:
 	T * _pointer;
-	const T* const_pointer;
+	//const T* const_pointer;
 	size_t _size;
 	size_t _capacity;
 
@@ -28,19 +28,11 @@ public:
 
 	~Vector()
 	{
-		if (_pointer != nullptr)
-		{
-			delete[] _pointer;
-
-			_size = 0;
-			_capacity = 0;
-		}
+		delete[] _pointer;
 	}
 
 	Vector(const Vector& other)
 	{
-		this->~Vector();
-
 		_capacity = other._capacity;
 		_size = other._size;
 		_pointer = new T[_capacity];
@@ -53,8 +45,6 @@ public:
 
 	Vector(Vector&& other)
 	{
-		this->~Vector();
-
 		_capacity = other._capacity;
 		_size = other._size;
 		_pointer = other._pointer;
@@ -86,7 +76,7 @@ public:
 			return *this;
 		}
 
-		if (_capacity != other._capacity)
+		if (_capacity != other._capacity) // Jämför med size istället >=
 		{
 			this->~Vector();
 			_capacity = other._capacity;
@@ -128,10 +118,7 @@ public:
 		{
 			throw std::out_of_range("");
 		}
-		else
-		{
-			return _pointer[i];
-		}
+		return _pointer[i];
 	}
 
 	const T& operator[](size_t i) const
