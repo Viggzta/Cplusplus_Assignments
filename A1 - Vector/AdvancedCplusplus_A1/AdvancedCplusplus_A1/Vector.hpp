@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <iterator>
 #include <stdexcept>
+#include <cassert>
 #include <vector>
 
 #include "VectorIter.hpp"
@@ -11,7 +12,6 @@ class Vector : std::iterator<std::random_access_iterator_tag, T, ptrdiff_t, T*, 
 {
 private:
 	T * _pointer;
-	//const T* const_pointer;
 	size_t _size;
 	size_t _capacity;
 
@@ -76,10 +76,10 @@ public:
 			return *this;
 		}
 
-		if (_capacity != other._capacity) // Jämför med size istället >=
+		if (_capacity < other._size) // Jämför med size istället >=
 		{
 			this->~Vector();
-			_capacity = other._capacity;
+			_capacity = other._size;
 			_pointer = new T[_capacity];
 		}
 		_size = other._size;
@@ -157,23 +157,15 @@ public:
 	{
 		if (_capacity < n)
 		{
-			if (_pointer != nullptr)
+			T* newData = new T[n];
+			for (size_t i = 0; i < _size; ++i)
 			{
-				T* newData = new T[n];
-				for (size_t i = 0; i < _size; ++i)
-				{
-					newData[i] = _pointer[i];
-				}
-
-				delete[] _pointer;
-
-				_pointer = newData;
+				newData[i] = _pointer[i];
 			}
-			else
-			{
-				_pointer = new T[n];
-				_size = 0;
-			}
+
+			delete[] _pointer;
+
+			_pointer = newData;
 			_capacity = n;
 		}
 	}
@@ -250,62 +242,53 @@ public:
 
 	friend bool operator!=(const Vector& lhs, const Vector& other)
 	{
-		if (lhs.size() != other.size())
-		{
-			return true;
-		}
-		for (size_t i = 0; i < other.size(); ++i)
-		{
-			if (lhs[i] != other[i])
-			{
-				return true;
-			}
-		}
-		return false;
+		return !(lhs == other);
 	}
 
 	friend bool operator<(const Vector& lhs, const Vector& other)
 	{
-		for (size_t i = 0; i < other.size(); ++i)
+		// Hitta den minsta vektor storleken
+		size_t loopSize = lhs.size();
+		if (other.size() < loopSize)
+		{
+			loopSize = other.size();
+		}
+
+		// Sök efter skillnader i datan
+		for (size_t i = 0; i < loopSize; ++i)
 		{
 			if (lhs[i] == other[i])
 			{
 				continue;
 			}
 
-			if (lhs[i] < other[i])
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return (lhs[i] < other[i]); // Hittade skillnad i datan
 		}
 
-		return false;
+		return (lhs.size() < other.size()); // Om datan är lika men har olika size
 	}
 
 	friend bool operator>(const Vector& lhs, const Vector& other)
 	{
-		for (size_t i = 0; i < other.size(); ++i)
+		// Hitta den minsta vektor storleken
+		size_t loopSize = lhs.size();
+		if (other.size() < loopSize)
+		{
+			loopSize = other.size();
+		}
+
+		// Sök efter skillnader i datan
+		for (size_t i = 0; i < loopSize; ++i)
 		{
 			if (lhs[i] == other[i])
 			{
 				continue;
 			}
 
-			if (lhs[i] > other[i])
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return (lhs[i] > other[i]); // Hittade skillnad i datan
 		}
 
-		return false;
+		return (lhs.size() > other.size()); // Om datan är lika men har olika size
 	}
 
 	friend bool operator<=(const Vector& lhs, const Vector& other)
@@ -323,6 +306,21 @@ public:
 		T temp(lhs);
 		lhs = rhs;
 		rhs = temp;
+	}
+
+	bool Invariant() const
+	{
+		if (_pointer == nullptr)
+		{
+			return false;
+		}
+
+		return (_size <= _capacity);
+	}
+
+	void Check() const
+	{
+		assert(Invariant());
 	}
 
 	// Testing

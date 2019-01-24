@@ -20,9 +20,9 @@ public:
 	using value_type = T;
 	using size_type = size_t;
 	using difference_type = ptrdiff_t;
-	using reference = T&;
+	using reference = T & ;
 	using const_reference = const T&;
-	using pointer = T*;
+	using pointer = T * ;
 	using const_pointer = const T*;
 	using iterator = VectIter<T>;
 	using const_iterator = VectIter<const T>;
@@ -44,8 +44,6 @@ public:
 		if (_capacity != 0)
 		{
 			_alloc.deallocate(_pointer, _capacity);
-			_size = 0;
-			_capacity = 0;
 		}
 		std::cout << "Ran destructor." << std::endl;
 	}
@@ -53,8 +51,6 @@ public:
 	// O(n) Done
 	Vector(const Vector& other)
 	{
-		this->~Vector();
-
 		_capacity = other._capacity;
 		_size = other._size;
 		_pointer = _alloc.allocate(_capacity);
@@ -70,8 +66,6 @@ public:
 	// O(1) Done
 	Vector(Vector&& other) noexcept
 	{
-		this->~Vector();
-
 		_capacity = other._capacity;
 		_size = other._size;
 		_pointer = other._pointer;
@@ -86,8 +80,6 @@ public:
 	template<class Titer>
 	Vector(size_t newCapacity, const Titer& begin, const Titer& end)
 	{
-		this->~Vector();
-
 		_capacity = newCapacity;
 		_size = 0;
 		_pointer = _alloc.allocate(_capacity);
@@ -126,10 +118,10 @@ public:
 			return *this;
 		}
 
-		if (_capacity != other._capacity)
+		if (_capacity < other._size)
 		{
 			this->~Vector();
-			_capacity = other._capacity;
+			_capacity = other._size;
 			_pointer = _alloc.allocate(_capacity);;
 		}
 		_size = other._size;
@@ -284,7 +276,7 @@ public:
 	}
 
 	// Inte med i uppgiften Done
-	void resize(size_t n)
+	/*void resize(size_t n)
 	{
 		if (n > _capacity)
 		{
@@ -298,7 +290,7 @@ public:
 			}
 		}
 		_size = n;
-	}
+	}*/
 
 	// O(1)
 	iterator begin() noexcept
@@ -390,62 +382,53 @@ public:
 
 	friend bool operator!=(const Vector& lhs, const Vector& other)
 	{
-		if (lhs.size() != other.size())
-		{
-			return true;
-		}
-		for (size_t i = 0; i < other.size(); ++i)
-		{
-			if (lhs[i] != other[i])
-			{
-				return true;
-			}
-		}
-		return false;
+		return !(lhs == other);
 	}
 
 	friend bool operator<(const Vector& lhs, const Vector& other)
 	{
-		for (size_t i = 0; i < other.size(); ++i)
+		// Hitta den minsta vektor storleken
+		size_t loopSize = lhs.size();
+		if (other.size() < loopSize)
+		{
+			loopSize = other.size();
+		}
+
+		// Sök efter skillnader i datan
+		for (size_t i = 0; i < loopSize; ++i)
 		{
 			if (lhs[i] == other[i])
 			{
 				continue;
 			}
 
-			if (lhs[i] < other[i])
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return (lhs[i] < other[i]); // Hittade skillnad i datan
 		}
 
-		return false;
+		return (lhs.size() < other.size()); // Om datan är lika men har olika size
 	}
 
 	friend bool operator>(const Vector& lhs, const Vector& other)
 	{
-		for (size_t i = 0; i < other.size(); ++i)
+		// Hitta den minsta vektor storleken
+		size_t loopSize = lhs.size();
+		if (other.size() < loopSize)
+		{
+			loopSize = other.size();
+		}
+
+		// Sök efter skillnader i datan
+		for (size_t i = 0; i < loopSize; ++i)
 		{
 			if (lhs[i] == other[i])
 			{
 				continue;
 			}
 
-			if (lhs[i] > other[i])
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return (lhs[i] > other[i]); // Hittade skillnad i datan
 		}
 
-		return false;
+		return (lhs.size() > other.size()); // Om datan är lika men har olika size
 	}
 
 	friend bool operator<=(const Vector& lhs, const Vector& other)

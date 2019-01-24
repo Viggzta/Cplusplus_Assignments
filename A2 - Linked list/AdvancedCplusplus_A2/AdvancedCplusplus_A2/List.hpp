@@ -184,8 +184,6 @@ public:
 
 	List(const List& other)
 	{
-		this->~List();
-
 		_head._next = &_head;
 		_head._prev = &_head;
 		_size = 0;
@@ -262,6 +260,12 @@ public:
 
 	List& operator=(List&& other)
 	{
+		// Det finns inget att flytta
+		if (&_head == &other._head)
+		{
+			return *this;
+		}
+
 		if (_size != 0)
 		{
 			Link<T>* temp = _head._next;
