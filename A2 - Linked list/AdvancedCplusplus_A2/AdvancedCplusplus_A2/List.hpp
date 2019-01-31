@@ -260,6 +260,9 @@ public:
 
 	List& operator=(List&& other)
 	{
+		//List temp(other);
+		//swap(*this, temp);
+
 		// Det finns inget att flytta
 		if (&_head == &other._head)
 		{
@@ -420,7 +423,7 @@ public:
 	friend bool operator<(const List& lhs, const List& other)
 	{
 		auto a = lhs.begin(), b = other.begin();
-		while (a != lhs.end())
+		while (a != lhs.end() && b != other.end())
 		{
 			if (a._linkPtr->asNode()->data() != b._linkPtr->asNode()->data())
 			{
@@ -430,12 +433,7 @@ public:
 			++b;
 		}
 
-		if (lhs.size() < other.size())
-		{
-			return true;
-		}
-
-		return false; // Allt är lika
+		return (lhs.size() < other.size());
 	}
 
 	friend bool operator>(const List& lhs, const List& other)
