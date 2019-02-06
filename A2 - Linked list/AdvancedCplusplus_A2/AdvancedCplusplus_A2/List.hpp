@@ -260,52 +260,9 @@ public:
 
 	List& operator=(List&& other)
 	{
-		//List temp(other);
-		//swap(*this, temp);
-
-		// Det finns inget att flytta
-		if (&_head == &other._head)
-		{
-			return *this;
-		}
-
-		if (_size != 0)
-		{
-			Link<T>* temp = _head._next;
-			// Loops through all elements and deletes them
-			while (temp != &_head)
-			{
-				temp = temp->_next;
-				delete temp->Prev();
-			}
-			_size = 0;
-		}
-
-		if (other._size == 0)
-		{
-			// Det finns inget att flytta
-			_head._next = &_head;
-			_head._prev = &_head;
-			_size = 0;
-		}
-		else
-		{
-			// Länkar till nytt huvud
-			_head._next = other._head._next;
-			_head._prev = other._head._prev;
-			_size = other._size;
-
-			// Länka prev och next till rätt huvud
-			_head._next->_prev = &_head;
-			_head._prev->_next = &_head;
-
-			// Länkar om other
-			other._head._next = &other._head;
-			other._head._prev = &other._head;
-			other._size = 0;
-		}
-
-		return *this;
+		// Olles lösning. Från 42 rader kod till 2.
+		List temp(other);
+		swap(*this, temp);
 	}
 
 	T& front()
