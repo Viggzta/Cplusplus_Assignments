@@ -43,6 +43,10 @@ public:
 	{
 		if (_capacity != 0)
 		{
+			for (size_t i = 0; i != _size; ++i)
+			{
+				_pointer[i].~T();
+			}
 			_alloc.deallocate(_pointer, _capacity);
 		}
 		std::cout << "Ran destructor." << std::endl;
@@ -55,17 +59,21 @@ public:
 		_size = other._size;
 		_pointer = _alloc.allocate(_capacity);
 
+		size_t i = 0;
 		try
 		{
-			for (size_t i = 0; i < _size; ++i)
+			for (; i != _size; ++i)
 			{
 				new(_pointer + i) T(other._pointer[i]);
 			}
 		}
 		catch (const std::exception&)
 		{
+			for (; i != 0; --i)
+			{
+				_pointer[i].~T();
+			}
 			_alloc.deallocate(_pointer, _capacity);
-			// Destruktor
 			throw;
 		}
 
@@ -85,7 +93,7 @@ public:
 		std::cout << "Ran move ctor." << std::endl;
 	}
 
-	// O(n) Done
+	// O(n) TBD
 	template<class Titer>
 	Vector(size_t newCapacity, const Titer& begin, const Titer& end)
 	{
@@ -95,25 +103,36 @@ public:
 
 		for (auto it = begin; it != end; ++it)
 		{
-			push_back(it);
+			push_back(*it);
 		}
 
 		std::cout << "Ran copy loop ctor." << std::endl;
 	}
 
-	// O(n) Done
+	// O(n) TBD
 	Vector(const char* other)
 	{
 		_size = 0;
-		_capacity = 4;
+		_capacity = std::strlen(other);
 		_pointer = _alloc.allocate(_capacity);
 
 		int offset = 0;
-		while (other[offset] != '\0')
+		try
 		{
-			std::cout << "Pushing! " << other[offset] << std::endl;
-			push_back(other[offset]);
-			++offset;
+			while (other[offset] != '\0')
+			{
+				push_back(other[offset]);
+				++offset;
+			}
+		}
+		catch (const std::exception&)
+		{
+			while (offset != 0)
+			{
+				_pointer[offset].~T();
+				--offset;
+			}
+			_alloc.deallocate(_pointer, _capacity);
 		}
 
 		std::cout << "Ran char ctor." << std::endl;
@@ -122,25 +141,10 @@ public:
 	// O(n) Done
 	Vector& operator=(const Vector& other)
 	{
-		if (*this == other)
-		{
-			return *this;
-		}
+		Vector temp(other);
+		swap(temp);
 
-		if (_capacity < other._size)
-		{
-			this->~Vector();
-			_capacity = other._size;
-			_pointer = _alloc.allocate(_capacity);;
-		}
-		_size = other._size;
-
-		for (size_t i = 0; i < _size; ++i)
-		{
-			new(_pointer + i) T(other._pointer[i]);
-		}
-
-		std::cout << "Ran copy operator." << std::endl;
+		std::cout << "Ran assign operator." << std::endl;
 		return *this;
 	}
 
@@ -225,12 +229,25 @@ public:
 			if (_pointer != nullptr)
 			{
 				T* newData = _alloc.allocate(n);
-				for (size_t i = 0; i < _size; ++i)
+				size_t i = 0;
+				try
 				{
-					new(newData + i) T(_pointer[i]);
+					for (; i < _size; ++i)
+					{
+						new(newData + i) T(_pointer[i]);
+					}
+					_alloc.deallocate(_pointer, _capacity);
+					_pointer = newData;
 				}
-				_alloc.deallocate(_pointer, _capacity);
-				_pointer = newData;
+				catch (const std::exception&)
+				{
+					for (; i != 0; --i)
+					{
+						newData[i].~T();
+					}
+					_alloc.deallocate(newData, n);
+					throw;
+				}
 			}
 			else
 			{
@@ -251,13 +268,30 @@ public:
 	void shrink_to_fit()
 	{
 		T* out = _alloc.allocate(_size);
-		for (size_t i = 0; i < _size; ++i)
+		size_t i = 0;
+		try
 		{
-			new(out + i) T(_pointer[i]);
+			for (; i < _size; ++i)
+			{
+				new(out + i) T(_pointer[i]);
+			}
+			for (size_t j = 0; j < _size; j++)
+			{
+				_pointer[i].~T();
+			}
+			_alloc.deallocate(_pointer, _size);
+			_capacity = _size;
+			_pointer = out;
 		}
-		_alloc.deallocate(_pointer, _capacity);
-		_capacity = _size;
-		_pointer = out;
+		catch (const std::exception&)
+		{
+			for (; i != 0; --i)
+			{
+				out[i].~T();
+			}
+			_alloc.deallocate(out, _size);
+			throw;
+		}
 	}
 
 	// O(1) ammorterat och O(n) vid omallokering Done
@@ -268,8 +302,15 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		new(_pointer + _size) T(c);
-		++_size;
+		try
+		{
+			new(_pointer + _size) T(c);
+			++_size;
+		}
+		catch (const std::exception&)
+		{
+			throw;
+		}
 	}
 
 	// O(1) ammorterat och O(n) vid omallokering Done
@@ -280,8 +321,15 @@ public:
 			reserve(_capacity * 2);
 		}
 
-		new(_pointer + _size) T(std::move(c));
-		++_size;
+		try
+		{
+			new(_pointer + _size) T(std::move(c));
+			++_size;
+		}
+		catch (const std::exception&)
+		{
+			throw;
+		}
 	}
 
 	// Inte med i uppgiften Done
@@ -459,12 +507,29 @@ public:
 	{
 		assert(Invariant());
 	}
+
+	template <class T>
+	void swap(Vector<T>& rhs)
+	{
+		// TMP = RHS
+		T* _pointerTemp = rhs._pointer;
+		size_t _sizeTemp = rhs._size;
+		size_t _capacityTemp = rhs._capacity;
+
+		// RHS = LHS
+		rhs._pointer = _pointer;
+		rhs._size = _size;
+		rhs._capacity = _capacity;
+
+		// LHS = TMP
+		_pointer = _pointerTemp;
+		_size = _sizeTemp;
+		_capacity = _capacityTemp;
+	};
 };
 
 template <class T>
 void swap(Vector<T>& lhs, Vector<T>& rhs)
 {
-	Vector<T> temp(lhs);
-	lhs = rhs;
-	rhs = temp;
+	lhs.swap(rhs);
 };

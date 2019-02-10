@@ -1,3 +1,5 @@
+#include "Vector.hpp"
+#include <cassert>
 
 #include "VectorTestHelp.h"
 

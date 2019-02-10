@@ -188,7 +188,9 @@ void TestVector() {
 	{
 		Vector<char> a("foo");
 		Vector<char> b(std::move(a));
-		assert(b == "foo" && a.data() == nullptr);
+		assert(a.data() == nullptr);
+		assert(b == "foo");
+		//assert(b == "foo" && a.data() == nullptr);
 	}
 
 	//-	Vector<char>(char *)
