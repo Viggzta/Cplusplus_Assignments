@@ -55,9 +55,18 @@ public:
 		_size = other._size;
 		_pointer = _alloc.allocate(_capacity);
 
-		for (size_t i = 0; i < _size; ++i)
+		try
 		{
-			new(_pointer + i) T(other._pointer[i]);
+			for (size_t i = 0; i < _size; ++i)
+			{
+				new(_pointer + i) T(other._pointer[i]);
+			}
+		}
+		catch (const std::exception&)
+		{
+			_alloc.deallocate(_pointer, _capacity);
+			// Destruktor
+			throw;
 		}
 
 		std::cout << "Ran copy ctor." << std::endl;

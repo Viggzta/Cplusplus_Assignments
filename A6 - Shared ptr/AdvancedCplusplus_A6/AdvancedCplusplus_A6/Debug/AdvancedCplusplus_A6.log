@@ -1,2 +1,4 @@
 ﻿  Main.cpp
-  AdvancedCplusplus_A6.vcxproj -> B:\MAPP\Game-Projects\Cplusplus_Assignments\A6 - Shared ptr\AdvancedCplusplus_A6\Debug\AdvancedCplusplus_A6.exe
+d:\gameprojects\cplusplus_assignments\a6 - shared ptr\advancedcplusplus_a6\advancedcplusplus_a6\main.cpp(113): error C2679: binary '=': no operator found which takes a right-hand operand of type 'nullptr' (or there is no acceptable conversion)
+  d:\gameprojects\cplusplus_assignments\a6 - shared ptr\advancedcplusplus_a6\advancedcplusplus_a6\sharedptr.hpp(114): note: could be 'SharedPtr<C> &SharedPtr<C>::operator =(SharedPtr<C> &)'
+  d:\gameprojects\cplusplus_assignments\a6 - shared ptr\advancedcplusplus_a6\advancedcplusplus_a6\main.cpp(113): note: while trying to match the argument list '(SharedPtr<C>, nullptr)'

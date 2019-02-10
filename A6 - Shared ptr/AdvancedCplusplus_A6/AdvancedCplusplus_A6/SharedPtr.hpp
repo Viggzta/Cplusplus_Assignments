@@ -111,11 +111,11 @@ public:
 		removeRef();
 	}
 
-	SharedPtr* operator=(SharedPtr& other)
+	SharedPtr& operator=(SharedPtr& other)
 	{
 		if (isSelf(other))
 		{
-			return this;
+			return *this;
 		}
 
 		removeRef();
@@ -124,23 +124,23 @@ public:
 		addRef(_pointer);
 
 		std::cout << "Ran copy assign(" << _refCount << "). " << std::endl;
-		return this;
+		return *this;
 	}
 
-	SharedPtr* operator=(std::nullptr_t other)
-	{
-		if (_pointer == nullptr)
-		{
-			return this;
-		}
+	//SharedPtr* operator=(std::nullptr_t other)
+	//{
+	//	if (_pointer == nullptr)
+	//	{
+	//		return this;
+	//	}
 
-		removeRef();
-		_pointer = nullptr;
-		_refCount = nullptr;
+	//	removeRef();
+	//	_pointer = nullptr;
+	//	_refCount = nullptr;
 
-		std::cout << "Ran nullptr assign(" << _refCount << "). " << std::endl;
-		return this;
-	}
+	//	std::cout << "Ran nullptr assign(" << _refCount << "). " << std::endl;
+	//	return this;
+	//}
 
 	friend bool operator==(SharedPtr& lhs, std::nullptr_t rhs)
 	{
